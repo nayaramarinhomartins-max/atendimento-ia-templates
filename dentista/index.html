@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProspectIA · Demo Odontologia</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-50:#EFF6FF;--blue-100:#DBEAFE;--blue-200:#BFDBFE;
+  --blue-400:#60A5FA;--blue-500:#3B82F6;--blue-600:#2563EB;
+  --blue-700:#1D4ED8;--blue-800:#1E40AF;
+  --green:#10B981;--green-bg:#D1FAE5;--green-border:#6EE7B7;
+  --red:#EF4444;--red-bg:#FEE2E2;--red-border:#FECACA;
+  --yellow:#F59E0B;--yellow-bg:#FEF3C7;--yellow-border:#FDE68A;
+  --orange:#F97316;--orange-bg:#FFEDD5;
+  --purple:#8B5CF6;--purple-bg:#EDE9FE;
+  --cyan:#0891B2;--cyan-bg:#CFFAFE;--cyan-border:#A5F3FC;
+  --sidebar-w:228px;--topbar-h:54px;
+  --r:6px;--r-lg:10px;--r-xl:14px;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.05);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --tr:140ms ease;
+}
+[data-theme="light"] {
+  --bg:#F4F6FB;--surface:#FFFFFF;--surface-2:#F0F3FA;--surface-3:#E8EEFA;
+  --border:#E2E7F3;--border-2:#CDD5ED;
+  --tx:#0D1526;--tx-2:#2D3A55;--tx-3:#5A6A8A;--tx-4:#8FA0BF;
+  --sb-bg:#FFFFFF;--sb-border:#E8EDF7;--sb-hover:#F4F6FB;
+  --sb-act-bg:#EEF2FF;--sb-act-tx:#1D4ED8;--sb-act-ic:#2563EB;
+  --sb-tx:#3D4D6A;--sb-lbl:#9AAAC5;
+  --topbar:#FFFFFF;
+  --chat-bg:#F4F6FB;--bot-bub:#FFFFFF;--bot-bub-bd:#E2E7F3;
+  --usr-bub:#2563EB;--inp-bg:#FFFFFF;
+}
+[data-theme="dark"] {
+  --bg:#080E1C;--surface:#0F1829;--surface-2:#162035;--surface-3:#1C2941;
+  --border:#1F2E47;--border-2:#28395A;
+  --tx:#E8EEFF;--tx-2:#B0BEDD;--tx-3:#6A82A8;--tx-4:#3D5070;
+  --sb-bg:#0C1523;--sb-border:#182438;--sb-hover:#162035;
+  --sb-act-bg:rgba(37,99,235,.15);--sb-act-tx:#60A5FA;--sb-act-ic:#60A5FA;
+  --sb-tx:#8FA8CC;--sb-lbl:#3D5070;
+  --topbar:#0C1523;
+  --chat-bg:#080E1C;--bot-bub:#0F1829;--bot-bub-bd:#1F2E47;
+  --usr-bub:#1D4ED8;--inp-bg:#0F1829;
+  --blue-50:rgba(30,58,138,.18);--blue-100:rgba(30,58,138,.30);
+  --green-bg:#022C22;--red-bg:#200909;--yellow-bg:#271700;
+  --orange-bg:#1F0C02;--purple-bg:#180D35;--cyan-bg:#0A2535;
+  --green-border:#065F46;--red-border:#7F1D1D;--yellow-border:#78350F;--cyan-border:#164E63;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;-webkit-font-smoothing:antialiased;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden;line-height:1.5;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;}
+input,textarea,select{font-family:inherit;font-size:inherit;outline:none;}
+a{color:inherit;text-decoration:none;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px;}
+
+.app{display:flex;height:100vh;overflow:hidden;}
+
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sb-bg);border-right:1px solid var(--sb-border);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.s-logo{padding:12px 14px 11px;border-bottom:1px solid var(--sb-border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.s-logo-ic{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#0891B2,#0E7490);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(8,145,178,.35);flex-shrink:0;}
+.s-logo-ic svg{color:#fff;width:15px;height:15px;}
+.s-logo-tx{font-size:15px;font-weight:800;letter-spacing:-.4px;color:var(--tx);}
+.s-logo-tx em{font-style:normal;color:var(--cyan);}
+.s-nav{flex:1;overflow-y:auto;padding:8px;}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--sb-lbl);padding:10px 8px 5px;}
+.s-lbl:first-child{padding-top:4px;}
+.s-item{display:flex;align-items:center;gap:9px;height:34px;padding:0 9px;border-radius:6px;color:var(--sb-tx);font-size:13px;font-weight:500;width:100%;text-align:left;transition:background var(--tr),color var(--tr);white-space:nowrap;}
+.s-item .ic{width:14px;height:14px;flex-shrink:0;color:var(--tx-4);transition:color var(--tr);}
+.s-item:hover{background:var(--sb-hover);color:var(--tx);}
+.s-item:hover .ic{color:var(--tx-3);}
+.s-item.on{background:var(--sb-act-bg);color:var(--sb-act-tx);font-weight:600;}
+.s-item.on .ic{color:var(--sb-act-ic);}
+.s-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;line-height:16px;min-width:18px;text-align:center;}
+.s-badge-blue{margin-left:auto;background:var(--blue-100);color:var(--blue-700);font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;line-height:16px;}
+.s-footer{padding:8px;border-top:1px solid var(--sb-border);flex-shrink:0;}
+.s-user{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:7px;cursor:pointer;transition:background var(--tr);}
+.s-user:hover{background:var(--sb-hover);}
+.s-av{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),#0E7490);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.s-uname{font-size:12px;font-weight:600;color:var(--tx);}
+.plan{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;text-transform:uppercase;background:var(--cyan-bg);color:var(--cyan);}
+
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.topbar{height:var(--topbar-h);background:var(--topbar);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;gap:12px;}
+.tb-page{font-size:15px;font-weight:800;color:var(--tx);}
+.tb-r{display:flex;align-items:center;gap:8px;}
+.wa-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:7px;font-size:12px;font-weight:500;color:var(--green);}
+.wa-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(16,185,129,.2);flex-shrink:0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+.ic-btn{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--tx-3);transition:background var(--tr),color var(--tr);}
+.ic-btn:hover{background:var(--surface-2);color:var(--tx);}
+.ic-btn svg{width:14px;height:14px;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 14px;height:32px;border-radius:var(--r);font-size:12px;font-weight:600;transition:all var(--tr);white-space:nowrap;flex-shrink:0;}
+.btn svg{width:13px;height:13px;}
+.btn-p{background:var(--cyan);color:#fff;border:1.5px solid transparent;}
+.btn-p:hover{background:#0E7490;}
+.btn-s{background:var(--surface-2);color:var(--tx-2);border:1.5px solid var(--border);}
+.btn-s:hover{background:var(--surface-3);}
+.btn-g{background:transparent;color:var(--tx-3);border:1.5px solid var(--border);}
+.btn-g:hover{background:var(--surface-2);color:var(--tx);}
+.btn-sm{height:28px;padding:0 10px;font-size:11px;}
+.btn-lg{height:38px;padding:0 18px;font-size:13px;}
+
+.content{flex:1;overflow-y:auto;padding:24px;}
+.page{display:none;}
+.page.on{display:block;}
+
+.ph{margin-bottom:20px;}
+.ph-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.ph h1{font-size:18px;font-weight:800;letter-spacing:-.3px;}
+.ph p{font-size:12px;color:var(--tx-3);margin-top:3px;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--shadow-xs);}
+.cp{padding:20px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.card-title{font-size:13px;font-weight:700;}
+.card-sub{font-size:11px;color:var(--tx-3);margin-top:1px;}
+.card-body{padding:16px 18px;}
+.card-foot{padding:12px 18px;border-top:1px solid var(--border);background:var(--surface-2);border-radius:0 0 var(--r-xl) var(--r-xl);}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--shadow-xs);}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-xl) var(--r-xl) 0 0;}
+.stat.c-blue::after{background:var(--blue-500);}
+.stat.c-green::after{background:var(--green);}
+.stat.c-yellow::after{background:var(--yellow);}
+.stat.c-red::after{background:var(--red);}
+.stat.c-cyan::after{background:var(--cyan);}
+.stat.c-orange::after{background:var(--orange);}
+.stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx-3);margin-bottom:6px;}
+.stat-val{font-size:26px;font-weight:800;color:var(--tx);line-height:1;letter-spacing:-.5px;}
+.stat-sub{font-size:11px;color:var(--tx-3);margin-top:4px;}
+
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap;}
+.b-blue{background:var(--blue-100);color:var(--blue-700);}
+.b-green{background:var(--green-bg);color:#047857;}
+.b-yellow{background:var(--yellow-bg);color:#92400E;}
+.b-red{background:var(--red-bg);color:#B91C1C;}
+.b-gray{background:var(--surface-3);color:var(--tx-3);border:1px solid var(--border);}
+.b-cyan{background:var(--cyan-bg);color:#0E7490;}
+.b-orange{background:var(--orange-bg);color:#C2410C;}
+[data-theme="dark"] .b-green{color:#34D399;}[data-theme="dark"] .b-blue{color:var(--blue-400);}
+[data-theme="dark"] .b-yellow{color:#FCD34D;}[data-theme="dark"] .b-red{color:#F87171;}
+[data-theme="dark"] .b-cyan{color:#22D3EE;}
+
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:9px 13px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tx-3);background:var(--surface-2);border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--tx-2);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tbody tr{transition:background var(--tr);}
+tbody tr:hover{background:var(--surface-2);}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.flex{display:flex;}.items-center{align-items:center;}.justify-between{justify-content:space-between;}
+.gap-8{gap:8px;}.gap-12{gap:12px;}.gap-16{gap:16px;}.flex-1{flex:1;}
+.mt-4{margin-top:4px;}.mt-8{margin-top:8px;}.mt-12{margin-top:12px;}.mt-16{margin-top:16px;}
+.fw-600{font-weight:600;}.fw-700{font-weight:700;}.text-sm{font-size:12px;}.text-xs{font-size:11px;}.tx-3{color:var(--tx-3);}.tx-2{color:var(--tx-2);}
+.mb-4{margin-bottom:4px;}
+
+.chart-ph{height:180px;background:var(--surface-2);border-radius:var(--r-lg);display:flex;align-items:flex-end;gap:8px;padding:16px;position:relative;overflow:hidden;}
+.chart-ph::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent calc(25% - 1px),var(--border) calc(25% - 1px),var(--border) 25%);opacity:.5;}
+.bar{flex:1;border-radius:4px 4px 0 0;background:var(--cyan);opacity:.7;transition:opacity var(--tr);position:relative;z-index:1;}
+.bar:hover{opacity:1;}
+.bar.g{background:var(--green);}
+.bar.y{background:var(--yellow);}
+
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;color:var(--tx-4);}
+.empty-ic{font-size:28px;margin-bottom:10px;opacity:.4;}
+.empty h4{font-size:13px;font-weight:600;color:var(--tx-3);margin-bottom:4px;}
+.empty p{font-size:11px;line-height:1.6;max-width:240px;}
+
+.prog-bar{height:6px;background:var(--surface-3);border-radius:99px;overflow:hidden;margin-bottom:4px;}
+.prog-fill{height:100%;border-radius:99px;background:var(--cyan);transition:width .4s ease;}
+.prog-fill.g{background:var(--green);}
+.prog-fill.y{background:var(--yellow);}
+
+.donut-wrap{display:flex;align-items:center;gap:16px;}
+.donut{position:relative;width:80px;height:80px;flex-shrink:0;}
+.donut svg{transform:rotate(-90deg);}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.donut-val{font-size:18px;font-weight:800;color:var(--tx);}
+.donut-lbl{font-size:9px;color:var(--tx-4);text-transform:uppercase;letter-spacing:.05em;}
+.donut-legend{flex:1;}
+.dl-item{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.dl-item:last-child{margin-bottom:0;}
+.dl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dl-name{font-size:11px;color:var(--tx-3);}
+.dl-pct{font-size:11px;font-weight:600;color:var(--tx);margin-left:auto;}
+
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:12px;position:relative;padding-bottom:16px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:1px;background:var(--border);}
+.tl-dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:2px;}
+.tl-dot.blue{background:var(--blue-100);color:var(--blue-700);}
+.tl-dot.green{background:var(--green-bg);color:#047857;}
+.tl-dot.gray{background:var(--surface-3);color:var(--tx-4);}
+.tl-dot.cyan{background:var(--cyan-bg);color:#0E7490;}
+.tl-content{}
+.tl-title{font-size:12px;font-weight:600;color:var(--tx);}
+.tl-sub{font-size:11px;color:var(--tx-3);margin-top:2px;}
+.tl-time{font-size:10px;color:var(--tx-4);margin-top:2px;}
+
+.av-row{display:flex;align-items:center;gap:8px;}
+.av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),#0E7490);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.av.g{background:linear-gradient(135deg,#10B981,#059669);}
+.av.y{background:linear-gradient(135deg,#F59E0B,#D97706);}
+.av.r{background:linear-gradient(135deg,#EF4444,#DC2626);}
+
+.area-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
+.area-row:last-child{border-bottom:none;}
+.area-left{display:flex;align-items:center;gap:10px;}
+.area-ic{width:30px;height:30px;border-radius:8px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:15px;}
+.area-name{font-size:12px;font-weight:600;color:var(--tx);}
+.area-count{font-size:11px;color:var(--tx-3);}
+
+.alert{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--r-lg);font-size:12px;line-height:1.5;}
+.alert-info{background:var(--cyan-bg);border:1px solid var(--cyan-border);color:var(--cyan);}
+[data-theme="dark"] .alert-info{color:#22D3EE;}
+
+.inp{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r);padding:0 28px 0 10px;color:var(--tx);appearance:none;-webkit-appearance:none;}
+select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238FA0BF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+
+.agenda-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:8px;}
+.agenda-date{width:36px;text-align:center;flex-shrink:0;}
+.agenda-day{font-size:18px;font-weight:800;color:var(--tx);line-height:1;}
+.agenda-month{font-size:10px;font-weight:700;color:var(--tx-3);text-transform:uppercase;}
+.agenda-info{flex:1;}
+.agenda-name{font-size:13px;font-weight:600;color:var(--tx);}
+.agenda-area{font-size:11px;color:var(--tx-3);margin-top:2px;}
+.agenda-time{font-size:11px;color:var(--tx-3);margin-top:3px;display:flex;align-items:center;gap:3px;}
+.agenda-actions{flex-shrink:0;}
+
+/* CHAT */
+.chat-page{display:none;flex:1;min-height:0;}
+.chat-page.on{display:flex;}
+.chat-grid{flex:1;display:grid;grid-template-columns:1fr 320px;min-height:0;overflow:hidden;}
+.chat-panel{display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--chat-bg);min-height:0;overflow:hidden;}
+.chat-hdr{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+.chat-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0891B2,#0E7490);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;position:relative;}
+.chat-av-dot{width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid var(--surface);position:absolute;bottom:-1px;right:-1px;}
+.chat-hdr-name{font-size:13px;font-weight:700;color:var(--tx);}
+.chat-hdr-status{font-size:11px;color:var(--green);}
+.chat-hdr-badge{margin-left:auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--cyan-bg);color:var(--cyan);}
+
+.msgs{flex:1;overflow-y:auto;padding:16px;}
+.msg{display:flex;gap:8px;margin-bottom:12px;}
+.msg.usr{flex-direction:row-reverse;}
+.m-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0891B2,#0E7490);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
+.bub{padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.55;max-width:360px;}
+.msg.bot .bub{background:var(--bot-bub);border:1px solid var(--bot-bub-bd);border-radius:4px 12px 12px 12px;color:var(--tx);}
+.msg.usr .bub{background:var(--usr-bub);color:#fff;border-radius:12px 4px 12px 12px;}
+.mtime{font-size:10px;color:var(--tx-4);margin-top:4px;padding:0 2px;}
+.msg.usr .mtime{text-align:right;}
+.dsep{text-align:center;font-size:10px;font-weight:600;color:var(--tx-4);text-transform:uppercase;letter-spacing:.07em;padding:6px 0 10px;}
+
+.typr{display:flex;gap:8px;margin-bottom:12px;}
+.typb{display:flex;gap:4px;align-items:center;background:var(--bot-bub);border:1px solid var(--bot-bub-bd);padding:12px 14px;border-radius:4px 12px 12px 12px;}
+.td{width:6px;height:6px;border-radius:50%;background:var(--tx-4);animation:ty .9s infinite;}
+.td:nth-child(2){animation-delay:.15s;}
+.td:nth-child(3){animation-delay:.3s;}
+@keyframes ty{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.opt{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:9px;text-align:left;transition:all var(--tr);width:100%;}
+.opt:hover{border-color:var(--cyan);background:var(--cyan-bg);}
+.oi{font-size:18px;flex-shrink:0;}
+.ol{font-size:12px;font-weight:600;color:var(--tx);}
+.os{font-size:11px;color:var(--tx-3);}
+.opt.picked{opacity:.4;pointer-events:none;}
+.opt.picked-win{border-color:var(--cyan);background:var(--cyan-bg);opacity:1;}
+
+.inp-wrap{padding:10px 12px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0;}
+.hint-txt{font-size:11px;color:var(--tx-4);padding:0 2px 5px;}
+.inp-row{display:flex;gap:8px;align-items:flex-end;}
+.msg-inp{flex:1;resize:none;background:var(--inp-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--tx);font-size:13px;line-height:1.4;max-height:88px;transition:border var(--tr);}
+.msg-inp:focus{border-color:var(--cyan);}
+.msg-inp:disabled{opacity:.5;}
+.send-btn{width:36px;height:36px;border-radius:10px;background:var(--cyan);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--tr);}
+.send-btn:hover:not(:disabled){background:#0E7490;}
+.send-btn:disabled{opacity:.4;}
+.send-btn svg{width:15px;height:15px;}
+.rst-btn{font-size:11px;color:var(--tx-4);padding:5px 2px 0;display:block;transition:color var(--tr);}
+.rst-btn:hover{color:var(--tx-3);}
+
+.dash-side{display:flex;flex-direction:column;background:var(--surface);overflow:hidden;}
+.dash-side-hdr{padding:12px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dash-side-hdr h3{font-size:13px;font-weight:700;}
+.dash-side-hdr p{font-size:11px;color:var(--tx-3);margin-top:2px;}
+.dash-body{flex:1;overflow-y:auto;padding:12px;}
+
+.stage-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-xl);padding:12px;margin-bottom:10px;}
+.stage-card-ttl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--tx-3);margin-bottom:10px;}
+.ss{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--border);opacity:.4;transition:opacity var(--tr);}
+.ss:last-child{border-bottom:none;}
+.ss.on{opacity:1;}
+.ss.dn{opacity:.6;}
+.ss-dot{width:20px;height:20px;border-radius:50%;background:var(--border-2);color:var(--tx-3);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ss.on .ss-dot{background:var(--cyan);color:#fff;}
+.ss.dn .ss-dot{background:var(--green);color:#fff;}
+.ss-lbl{font-size:12px;font-weight:600;color:var(--tx);}
+.ss-s{font-size:10px;color:var(--tx-3);}
+
+.lead-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:12px;margin-bottom:10px;}
+.lead-card-ttl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--tx-3);margin-bottom:10px;}
+.lr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
+.lr:last-child{border-bottom:none;}
+.lk{font-size:11px;color:var(--tx-3);}
+.lv{font-size:12px;font-weight:600;color:var(--tx);}
+.lv.em{color:var(--tx-4);font-weight:400;}
+
+.viab-card{border-radius:var(--r-xl);padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.viab-card.vv{background:var(--green-bg);border:1px solid var(--green-border);}
+.viab-card.vi{background:var(--yellow-bg);border:1px solid var(--yellow-border);}
+.viab-icon{font-size:20px;}
+.viab-lbl{font-size:13px;font-weight:700;color:var(--tx);}
+.viab-sub{font-size:11px;color:var(--tx-3);margin-top:2px;}
+
+.ans-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-xl);padding:12px;}
+.ans-card-ttl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--tx-3);margin-bottom:10px;}
+.ans-item{padding:7px 0;border-bottom:1px solid var(--border);}
+.ans-item:last-child{border-bottom:none;}
+.ans-q{font-size:11px;color:var(--tx-3);margin-bottom:3px;}
+.ans-a{font-size:12px;font-weight:500;color:var(--tx);}
+.ans-em{font-size:11px;color:var(--tx-4);font-style:italic;}
+
+/* ══ MOBILE RESPONSIVE ══ */
+.menu-btn{display:none;width:32px;height:32px;border-radius:6px;align-items:center;justify-content:center;color:var(--tx-3);flex-shrink:0;transition:background var(--tr);}
+.menu-btn:hover{background:var(--surface-2);}
+.menu-btn svg{width:18px;height:18px;}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;}
+.sb-overlay.on{display:block;}
+@media(max-width:768px){
+  .menu-btn{display:flex;}
+  .sidebar{position:fixed;transform:translateX(-100%);left:0;top:0;z-index:999;height:100vh;width:var(--sidebar-w);box-shadow:4px 0 20px rgba(0,0,0,.18);transition:transform .25s ease;}
+  .sidebar.open{transform:translateX(0);}
+  .main{width:100%;}
+  .topbar{padding:0 12px;gap:8px;}
+  .chat-grid{grid-template-columns:1fr !important;}
+  .dash-side{display:none !important;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .g2,.g3{grid-template-columns:1fr;}
+  .content{padding:16px 12px;}
+  .ph-row{flex-direction:column;gap:10px;}
+  .ph-row .flex{flex-wrap:wrap;}
+  .tbl-wrap{font-size:12px;}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr;}
+  .tb-page{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
+  .wa-pill{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="s-logo">
+      <div class="s-logo-ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="s-logo-tx">Prospect<em>IA</em></div>
+    </div>
+    <nav class="s-nav">
+      <div class="s-lbl">Atendimento</div>
+      <button class="s-item on" onclick="goPage('chat',this)">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Atendimento
+        <span class="s-badge" id="chatBadge">4</span>
+      </button>
+      <button class="s-item" onclick="goPage('dashboard',this)">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </button>
+      <div class="s-lbl">Gestão</div>
+      <button class="s-item" onclick="goPage('leads',this)">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Leads
+        <span class="s-badge-blue">104</span>
+      </button>
+      <button class="s-item" onclick="goPage('agenda',this)">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Agendamentos
+      </button>
+      <button class="s-item" onclick="goPage('relatorios',this)">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Relatórios
+      </button>
+      <div class="s-lbl">Configurações</div>
+      <button class="s-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Integração WhatsApp
+      </button>
+      <button class="s-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+        Perfil da Clínica
+      </button>
+    </nav>
+    <div class="s-footer">
+      <div class="s-user">
+        <div class="s-av">DO</div>
+        <div>
+          <div class="s-uname">Dr. Oliveira</div>
+          <span class="plan">Pro</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-btn ic-btn" onclick="openSb()" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div class="tb-page" id="topTitle">Atendimento Odontológico</div>
+      <div class="tb-r">
+        <div class="wa-pill"><div class="wa-dot"></div>WhatsApp ativo</div>
+        <button class="ic-btn" onclick="toggleTheme()" title="Alternar tema">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <a href="https://prospectia.space" target="_blank" class="btn btn-p btn-sm">prospectia.space ↗</a>
+      </div>
+    </header>
+
+    <!-- CHAT -->
+    <div class="chat-page on" id="page-chat">
+      <div class="chat-grid">
+        <div class="chat-panel">
+          <div class="chat-hdr">
+            <div class="chat-av">🦷<div class="chat-av-dot"></div></div>
+            <div>
+              <div class="chat-hdr-name">Sofia · Assistente Odontológica</div>
+              <div class="chat-hdr-status">● Online agora</div>
+            </div>
+            <span class="chat-hdr-badge">Demo ProspectIA</span>
+          </div>
+          <div class="msgs" id="msgs"><div class="dsep">Hoje</div></div>
+          <div class="inp-wrap">
+            <div class="hint-txt" id="hint">Aguarde...</div>
+            <div class="inp-row">
+              <textarea id="inp" class="msg-inp" placeholder="Digite aqui..." rows="1" disabled oninput="rsz(this)" onkeydown="hk(event)"></textarea>
+              <button id="sbtn" class="send-btn" disabled onclick="doSend()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+            <button class="rst-btn" onclick="restart()">↺ Reiniciar demonstração</button>
+          </div>
+        </div>
+        <div class="dash-side">
+          <div class="dash-side-hdr">
+            <h3>Lead em tempo real</h3>
+            <p>Atualizado conforme o paciente responde</p>
+          </div>
+          <div class="dash-body" id="dashBody">
+            <div class="empty"><div class="empty-ic">📋</div><h4>Aguardando interação</h4><p>Os dados aparecem aqui conforme o paciente preenche o chat.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page" id="page-dashboard">
+      <div class="content">
+        <div class="ph">
+          <div class="ph-row">
+            <div><h1>Dashboard</h1><p>Visão geral do atendimento odontológico automatizado</p></div>
+            <div class="flex gap-8">
+              <button class="btn btn-s btn-sm">Exportar</button>
+              <button class="btn btn-p btn-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Novo Lead
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat c-cyan"><div class="stat-lbl">Atendimentos</div><div class="stat-val">168</div><div class="stat-sub">↑ 24% este mês</div></div>
+          <div class="stat c-green"><div class="stat-lbl">Agendados</div><div class="stat-val">134</div><div class="stat-sub">80% de conversão</div></div>
+          <div class="stat c-orange"><div class="stat-lbl">Urgências</div><div class="stat-val">19</div><div class="stat-sub">Atendidas no dia</div></div>
+          <div class="stat c-blue"><div class="stat-lbl">Tempo Médio</div><div class="stat-val">3<span style="font-size:16px">min</span></div><div class="stat-sub">da triagem ao agend.</div></div>
+        </div>
+        <div class="g2 mt-4">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Atendimentos por Tratamento</div><div class="card-sub">Últimos 30 dias</div></div></div>
+            <div class="card-body">
+              <div class="area-row"><div class="area-left"><div class="area-ic">🔩</div><div><div class="area-name">Implante Dentário</div><div class="area-count">41 atendimentos</div></div></div><span class="badge b-cyan">24%</span></div>
+              <div class="area-row"><div class="area-left"><div class="area-ic">😬</div><div><div class="area-name">Ortodontia / Aparelho</div><div class="area-count">35 atendimentos</div></div></div><span class="badge b-blue">21%</span></div>
+              <div class="area-row"><div class="area-left"><div class="area-ic">😣</div><div><div class="area-name">Dor / Urgência</div><div class="area-count">28 atendimentos</div></div></div><span class="badge b-red">17%</span></div>
+              <div class="area-row"><div class="area-left"><div class="area-ic">✨</div><div><div class="area-name">Clareamento</div><div class="area-count">24 atendimentos</div></div></div><span class="badge b-yellow">14%</span></div>
+              <div class="area-row"><div class="area-left"><div class="area-ic">🦷</div><div><div class="area-name">Prótese / Canal</div><div class="area-count">22 atendimentos</div></div></div><span class="badge b-green">13%</span></div>
+              <div class="area-row"><div class="area-left"><div class="area-ic">📋</div><div><div class="area-name">Rotina / Outros</div><div class="area-count">18 atendimentos</div></div></div><span class="badge b-gray">11%</span></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="card">
+              <div class="card-head"><div class="card-title">Funil de Conversão</div></div>
+              <div class="card-body">
+                <div style="margin-bottom:10px;"><div class="flex justify-between text-xs tx-3 mb-4"><span>Atendimentos iniciados</span><span class="fw-600" style="color:var(--tx)">168</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
+                <div style="margin-bottom:10px;"><div class="flex justify-between text-xs tx-3 mb-4"><span>LGPD aceito</span><span class="fw-600" style="color:var(--tx)">158</span></div><div class="prog-bar"><div class="prog-fill" style="width:94%"></div></div></div>
+                <div style="margin-bottom:10px;"><div class="flex justify-between text-xs tx-3 mb-4"><span>Triagem concluída</span><span class="fw-600" style="color:var(--tx)">147</span></div><div class="prog-bar"><div class="prog-fill" style="width:87%"></div></div></div>
+                <div style="margin-bottom:10px;"><div class="flex justify-between text-xs tx-3 mb-4"><span>Perfil qualificado</span><span class="fw-600" style="color:var(--green)">139</span></div><div class="prog-bar"><div class="prog-fill g" style="width:83%"></div></div></div>
+                <div><div class="flex justify-between text-xs tx-3 mb-4"><span>Consultas agendadas</span><span class="fw-600" style="color:var(--green)">134</span></div><div class="prog-bar"><div class="prog-fill g" style="width:80%"></div></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">Atividade Recente</div></div>
+              <div class="card-body">
+                <div class="timeline">
+                  <div class="tl-item"><div class="tl-dot green">✓</div><div class="tl-content"><div class="tl-title">Maria Silva — Implante</div><div class="tl-sub">Avaliação agendada para Ter 14h</div><div class="tl-time">Há 6 min</div></div></div>
+                  <div class="tl-item"><div class="tl-dot cyan">🦷</div><div class="tl-content"><div class="tl-title">João P. — Urgência (dor)</div><div class="tl-sub">Encaixe no dia — agendado para 17h</div><div class="tl-time">Há 22 min</div></div></div>
+                  <div class="tl-item"><div class="tl-dot blue">😬</div><div class="tl-content"><div class="tl-title">Camila R. — Ortodontia</div><div class="tl-sub">Avaliação agendada — alinhador</div><div class="tl-time">Há 44 min</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-info mt-16">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Esta é uma demonstração com dados simulados. Na versão real, todos os dados são alimentados pelo fluxo n8n em tempo real, conectado ao WhatsApp da clínica.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADS -->
+    <div class="page" id="page-leads">
+      <div class="content">
+        <div class="ph">
+          <div class="ph-row">
+            <div><h1>Leads</h1><p>Todos os contatos captados pelo atendimento automático</p></div>
+            <div class="flex gap-8">
+              <button class="btn btn-s btn-sm">Exportar CSV</button>
+              <button class="btn btn-p btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar</button>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row" style="grid-template-columns:repeat(3,1fr);">
+          <div class="stat c-cyan"><div class="stat-lbl">Total de Leads</div><div class="stat-val">168</div><div class="stat-sub">+23 esta semana</div></div>
+          <div class="stat c-green"><div class="stat-lbl">Agendados</div><div class="stat-val">134</div><div class="stat-sub">80% de conversão</div></div>
+          <div class="stat c-yellow"><div class="stat-lbl">Aguardando</div><div class="stat-val">14</div><div class="stat-sub">Retorno pendente</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Todos os Leads</div>
+            <div class="flex gap-8">
+              <select class="inp" style="height:28px;font-size:11px;padding:0 24px 0 8px;width:auto;">
+                <option>Todos os tratamentos</option>
+                <option>Implante</option><option>Ortodontia</option><option>Urgência</option>
+                <option>Clareamento</option><option>Prótese</option><option>Rotina</option>
+              </select>
+              <select class="inp" style="height:28px;font-size:11px;padding:0 24px 0 8px;width:auto;">
+                <option>Todos os status</option>
+                <option>Agendado</option><option>Aguardando</option><option>Encaixe urgência</option>
+              </select>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Nome</th><th>Tratamento</th><th>Status</th><th>LGPD</th><th>Contato</th><th>Data</th><th></th></tr></thead>
+              <tbody id="leadsTable"></tbody>
+            </table>
+          </div>
+          <div class="card-foot"><span class="text-xs tx-3">Mostrando 12 de 168 leads</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div class="page" id="page-agenda">
+      <div class="content">
+        <div class="ph">
+          <div class="ph-row">
+            <div><h1>Agendamentos</h1><p>Consultas marcadas automaticamente pela assistente</p></div>
+            <div class="flex gap-8">
+              <button class="btn btn-s btn-sm">Ver calendário</button>
+              <button class="btn btn-p btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nova consulta</button>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row" style="grid-template-columns:repeat(4,1fr);">
+          <div class="stat c-green"><div class="stat-lbl">Esta semana</div><div class="stat-val">12</div><div class="stat-sub">Consultas confirmadas</div></div>
+          <div class="stat c-cyan"><div class="stat-lbl">Este mês</div><div class="stat-val">47</div><div class="stat-sub">Total agendado</div></div>
+          <div class="stat c-yellow"><div class="stat-lbl">Taxa de Comparec.</div><div class="stat-val">91<span style="font-size:14px">%</span></div><div class="stat-sub">Com lembrete automático</div></div>
+          <div class="stat c-red"><div class="stat-lbl">Urgências hoje</div><div class="stat-val">3</div><div class="stat-sub">Encaixe no dia</div></div>
+        </div>
+        <div class="g2">
+          <div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;">Próximas consultas</div>
+            <div id="agendaList"></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;">Agenda dos dentistas</div>
+            <div class="card">
+              <div class="card-body">
+                <div style="margin-bottom:14px;"><div class="flex justify-between text-sm mb-4"><span class="fw-600">Dr. Carlos Oliveira</span><span class="tx-3">18 consultas</span></div><div class="prog-bar"><div class="prog-fill" style="width:82%"></div></div></div>
+                <div style="margin-bottom:14px;"><div class="flex justify-between text-sm mb-4"><span class="fw-600">Dra. Ana Ferreira</span><span class="tx-3">15 consultas</span></div><div class="prog-bar"><div class="prog-fill" style="width:68%"></div></div></div>
+                <div><div class="flex justify-between text-sm mb-4"><span class="fw-600">Dr. Pedro Mota</span><span class="tx-3">14 consultas</span></div><div class="prog-bar"><div class="prog-fill" style="width:64%"></div></div></div>
+              </div>
+            </div>
+            <div class="alert alert-info mt-12">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Urgências identificadas pela triagem são automaticamente encaixadas na agenda do dia.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELATÓRIOS -->
+    <div class="page" id="page-relatorios">
+      <div class="content">
+        <div class="ph">
+          <div class="ph-row">
+            <div><h1>Relatórios</h1><p>Análise de desempenho do atendimento automatizado</p></div>
+            <div class="flex gap-8">
+              <select class="inp" style="height:32px;font-size:12px;width:auto;padding:0 24px 0 10px;">
+                <option>Últimos 30 dias</option><option>Últimos 7 dias</option><option>Este mês</option><option>Este ano</option>
+              </select>
+              <button class="btn btn-p btn-sm">Exportar PDF</button>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat c-cyan"><div class="stat-lbl">Atendimentos</div><div class="stat-val">168</div><div class="stat-sub">↑ 24% vs. mês anterior</div></div>
+          <div class="stat c-green"><div class="stat-lbl">Taxa de Agend.</div><div class="stat-val">80<span style="font-size:16px">%</span></div><div class="stat-sub">Média do mercado: 55%</div></div>
+          <div class="stat c-yellow"><div class="stat-lbl">Taxa de Comparec.</div><div class="stat-val">91<span style="font-size:16px">%</span></div><div class="stat-sub">Com lembrete WhatsApp</div></div>
+          <div class="stat c-red"><div class="stat-lbl">Tempo Economia</div><div class="stat-val">52<span style="font-size:16px">h</span></div><div class="stat-sub">Triagem automatizada</div></div>
+        </div>
+        <div class="g2 mt-4">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Atendimentos Diários</div><div class="card-sub">Últimos 14 dias</div></div></div>
+            <div class="card-body">
+              <div class="chart-ph">
+                <div class="bar" style="height:50%"></div><div class="bar" style="height:70%"></div>
+                <div class="bar" style="height:45%"></div><div class="bar" style="height:85%"></div>
+                <div class="bar" style="height:60%"></div><div class="bar" style="height:75%"></div>
+                <div class="bar" style="height:55%"></div><div class="bar g" style="height:90%"></div>
+                <div class="bar g" style="height:65%"></div><div class="bar g" style="height:100%"></div>
+                <div class="bar g" style="height:80%"></div><div class="bar g" style="height:92%"></div>
+                <div class="bar g" style="height:70%"></div><div class="bar g" style="height:95%"></div>
+              </div>
+              <div class="flex justify-between text-xs tx-3 mt-8">
+                <span>12/Mai</span><span>15/Mai</span><span>18/Mai</span><span>21/Mai</span><span>24/Mai</span><span>27/Mai</span><span>30/Mai</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Mix de Tratamentos</div><div class="card-sub">Total de atendimentos</div></div></div>
+            <div class="card-body">
+              <div class="donut-wrap">
+                <div class="donut">
+                  <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--surface-3)" stroke-width="12"/>
+                    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--cyan)" stroke-width="12" stroke-dasharray="45 143" stroke-dashoffset="0"/>
+                    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--blue-500)" stroke-width="12" stroke-dasharray="40 148" stroke-dashoffset="-45"/>
+                    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--red)" stroke-width="12" stroke-dasharray="32 156" stroke-dashoffset="-85"/>
+                    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--yellow)" stroke-width="12" stroke-dasharray="26 162" stroke-dashoffset="-117"/>
+                    <circle cx="40" cy="40" r="30" fill="none" stroke="var(--green)" stroke-width="12" stroke-dasharray="21 167" stroke-dashoffset="-143"/>
+                  </svg>
+                  <div class="donut-center"><div class="donut-val">168</div><div class="donut-lbl">total</div></div>
+                </div>
+                <div class="donut-legend">
+                  <div class="dl-item"><div class="dl-dot" style="background:var(--cyan)"></div><div class="dl-name">Implante</div><div class="dl-pct">24%</div></div>
+                  <div class="dl-item"><div class="dl-dot" style="background:var(--blue-500)"></div><div class="dl-name">Ortodontia</div><div class="dl-pct">21%</div></div>
+                  <div class="dl-item"><div class="dl-dot" style="background:var(--red)"></div><div class="dl-name">Urgência</div><div class="dl-pct">17%</div></div>
+                  <div class="dl-item"><div class="dl-dot" style="background:var(--yellow)"></div><div class="dl-name">Clareamento</div><div class="dl-pct">14%</div></div>
+                  <div class="dl-item"><div class="dl-dot" style="background:var(--green)"></div><div class="dl-name">Outros</div><div class="dl-pct">24%</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="g2 mt-4">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Ticket Médio por Tratamento</div></div>
+            <div class="card-body">
+              <div style="margin-bottom:12px;"><div class="flex justify-between text-sm mb-4"><span>Implante (unitário)</span><span class="fw-600" style="color:var(--cyan)">R$ 3.200</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
+              <div style="margin-bottom:12px;"><div class="flex justify-between text-sm mb-4"><span>Ortodontia (alinhador)</span><span class="fw-600" style="color:var(--cyan)">R$ 5.800</span></div><div class="prog-bar"><div class="prog-fill" style="width:90%"></div></div></div>
+              <div style="margin-bottom:12px;"><div class="flex justify-between text-sm mb-4"><span>Prótese fixa</span><span class="fw-600">R$ 2.100</span></div><div class="prog-bar"><div class="prog-fill" style="width:66%"></div></div></div>
+              <div><div class="flex justify-between text-sm mb-4"><span>Clareamento</span><span class="fw-600">R$ 800</span></div><div class="prog-bar"><div class="prog-fill y" style="width:25%"></div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Desempenho da Assistente</div></div>
+            <div class="card-body">
+              <div class="area-row"><div class="area-name text-sm">Tempo médio de triagem</div><span class="fw-600" style="color:var(--green)">3m 22s</span></div>
+              <div class="area-row"><div class="area-name text-sm">Satisfação dos pacientes</div><span class="fw-600" style="color:var(--green)">4.9 / 5</span></div>
+              <div class="area-row"><div class="area-name text-sm">Uptime do sistema</div><span class="fw-600" style="color:var(--green)">99.9%</span></div>
+              <div class="area-row"><div class="area-name text-sm">LGPD aceito</div><span class="fw-600" style="color:var(--cyan)">94%</span></div>
+              <div class="area-row"><div class="area-name text-sm">Urgências encaixadas</div><span class="fw-600" style="color:var(--green)">100%</span></div>
+              <div class="area-row" style="border:none"><div class="area-name text-sm">Horário de pico</div><span class="fw-600">12h – 14h e 19h – 21h</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var titles={chat:'Atendimento Odontológico',dashboard:'Dashboard',leads:'Leads',agenda:'Agendamentos',relatorios:'Relatórios'};
+function goPage(id,btn){
+  if(typeof closeSb!=="undefined") closeSb();
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.chat-page').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.s-item').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  var pg=document.getElementById('page-'+id);if(pg)pg.classList.add('on');
+  document.getElementById('topTitle').textContent=titles[id]||id;
+  if(id==='chat')document.getElementById('chatBadge').style.display='none';
+}
+function toggleTheme(){
+  var t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t);
+}
+
+var leadsData=[
+  {nome:'Maria Silva',area:'Implante',status:'agendado',lgpd:true,tel:'(18) 99111-2233',data:'Hoje, 14h'},
+  {nome:'João Pereira',area:'Urgência (dor)',status:'urgencia',lgpd:true,tel:'(18) 98222-3344',data:'Hoje, 17h'},
+  {nome:'Camila Rocha',area:'Ortodontia',status:'agendado',lgpd:true,tel:'(18) 97333-4455',data:'Hoje, 10h'},
+  {nome:'Lucas Mota',area:'Clareamento',status:'agendado',lgpd:true,tel:'(18) 96444-5566',data:'Ontem, 16h'},
+  {nome:'Fernanda Lima',area:'Prótese',status:'aguardando',lgpd:false,tel:'(18) 95555-6677',data:'Ontem, 11h'},
+  {nome:'Roberto Costa',area:'Implante',status:'agendado',lgpd:true,tel:'(18) 94666-7788',data:'Ontem, 9h'},
+  {nome:'Ana Souza',area:'Ortodontia',status:'agendado',lgpd:true,tel:'(19) 93777-8899',data:'Ontem, 14h'},
+  {nome:'Pedro Alves',area:'Canal',status:'urgencia',lgpd:true,tel:'(19) 92888-9900',data:'Ontem, 8h'},
+  {nome:'Tatiana Cruz',area:'Rotina',status:'agendado',lgpd:true,tel:'(21) 91999-0011',data:'24/05, 15h'},
+  {nome:'Marcos Nunes',area:'Clareamento',status:'agendado',lgpd:true,tel:'(21) 90000-1122',data:'24/05, 10h'},
+  {nome:'Juliana Ferr.',area:'Implante',status:'aguardando',lgpd:true,tel:'(31) 89111-2233',data:'23/05, 16h'},
+  {nome:'Bruno Melo',area:'Periodontia',status:'agendado',lgpd:true,tel:'(31) 88222-3344',data:'23/05, 9h'},
+];
+var statusMap={
+  agendado:'<span class="badge b-green">Agendado</span>',
+  urgencia:'<span class="badge b-red">Urgência</span>',
+  aguardando:'<span class="badge b-yellow">Aguardando</span>',
+};
+function buildLeadsTable(){
+  var tb=document.getElementById('leadsTable'),html='';
+  leadsData.forEach(function(l){
+    html+='<tr>'
+      +'<td><div class="av-row"><div class="av'+(l.status==='agendado'?' g':l.status==='urgencia'?' r':'')+'">'+l.nome.split(' ').map(function(w){return w[0];}).slice(0,2).join('')+'</div><span class="fw-600">'+l.nome+'</span></div></td>'
+      +'<td><span class="text-xs tx-3">'+l.area+'</span></td>'
+      +'<td>'+(statusMap[l.status]||'')+'</td>'
+      +'<td>'+(l.lgpd?'<span class="badge b-green">OK</span>':'<span class="badge b-yellow">Pendente</span>')+'</td>'
+      +'<td><span class="text-xs tx-3">'+l.tel+'</span></td>'
+      +'<td><span class="text-xs tx-3">'+l.data+'</span></td>'
+      +'<td><button class="btn btn-g btn-sm">Ver</button></td>'
+      +'</tr>';
+  });
+  tb.innerHTML=html;
+}
+
+var agendas=[
+  {dia:'02',mes:'Jun',nome:'Maria Silva',area:'Implante · Dr. Carlos Oliveira',hora:'14h00',status:'confirmado'},
+  {dia:'02',mes:'Jun',nome:'João Pereira',area:'Urgência · Dra. Ana Ferreira',hora:'17h00',status:'confirmado'},
+  {dia:'03',mes:'Jun',nome:'Camila Rocha',area:'Ortodontia · Dr. Carlos Oliveira',hora:'10h00',status:'confirmado'},
+  {dia:'03',mes:'Jun',nome:'Lucas Mota',area:'Clareamento · Dr. Pedro Mota',hora:'15h00',status:'aguardando'},
+  {dia:'04',mes:'Jun',nome:'Ana Souza',area:'Ortodontia · Dra. Ana Ferreira',hora:'9h00',status:'confirmado'},
+];
+function buildAgenda(){
+  var el=document.getElementById('agendaList'),html='';
+  agendas.forEach(function(a){
+    html+='<div class="agenda-item">'
+      +'<div class="agenda-date"><div class="agenda-day">'+a.dia+'</div><div class="agenda-month">'+a.mes+'</div></div>'
+      +'<div class="agenda-info"><div class="agenda-name">'+a.nome+'</div><div class="agenda-area">'+a.area+'</div>'
+      +'<div class="agenda-time"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+a.hora+'</div></div>'
+      +'<div class="agenda-actions">'+(a.status==='confirmado'?'<span class="badge b-green">Confirmado</span>':'<span class="badge b-yellow">Aguardando</span>')+'</div>'
+      +'</div>';
+  });
+  el.innerHTML=html;
+}
+
+var S={stage:'',nome:'',area:'',answers:[],qi:0,viab:'',horario:''};
+
+var AREAS=[
+  {k:'IMPL',icon:'🔩',label:'Implante Dentário',sub:'Reposição de dente perdido'},
+  {k:'ORTO',icon:'😬',label:'Ortodontia / Aparelho',sub:'Aparelho fixo, alinhador invisível'},
+  {k:'CLAR',icon:'✨',label:'Clareamento Dental',sub:'Dentes mais brancos e bonitos'},
+  {k:'DOR',icon:'😣',label:'Dor de Dente / Urgência',sub:'Dor, inchaço, dente quebrado'},
+  {k:'CANAL',icon:'🦷',label:'Tratamento de Canal',sub:'Indicação ou dúvida sobre canal'},
+  {k:'PROT',icon:'👄',label:'Prótese Dentária',sub:'Coroa, prótese total ou parcial'},
+  {k:'GENG',icon:'🩸',label:'Gengiva / Periodontia',sub:'Sangramento, recuo, mau hálito'},
+  {k:'ROT',icon:'📋',label:'Consulta de Rotina',sub:'Avaliação geral e limpeza'},
+  {k:'PED',icon:'👦',label:'Odonto Pediátrica',sub:'Atendimento infantil'},
+];
+
+var QS={
+  IMPL:['Há quanto tempo você perdeu o(s) dente(s)?','Você tem alguma condição de saúde como diabetes, osteoporose ou usa anticoagulantes?','Já fez implante antes ou é a primeira vez?','Tem preferência por implante unitário ou protocolo completo (boca toda)?'],
+  ORTO:['É para você ou para um familiar?','Qual é o problema principal? (dentes tortos, mordida, espaço, estética...)','Já usou aparelho antes?','Tem preferência por aparelho fixo metálico, estético (cerâmico) ou alinhador invisível?'],
+  CLAR:['Você faz acompanhamento odontológico regularmente?','Tem sensibilidade nos dentes com frio, calor ou doce?','Usa aparelho fixo atualmente?','Já fez clareamento antes? Qual tipo (caseiro ou no consultório)?'],
+  DOR:['A dor é constante ou aparece em certos momentos (ao comer, ao tomar frio/quente)?','Há quanto tempo está com essa dor?','O dente está quebrado, escurecido ou com alguma alteração visível?','Já tomou algum medicamento para a dor? Está aliviando?'],
+  CANAL:['Você já recebeu indicação de tratamento de canal por um dentista?','O dente está causando dor forte, inchaço ou está escurecido?','Tem alguma radiografia recente do dente?','Faz acompanhamento odontológico regularmente?'],
+  PROT:['Qual é a necessidade? (coroa, prótese total, parcial removível, faceta...)','Quantos dentes estão faltando ou precisam ser restaurados?','Já usou prótese antes? Está com alguma danificada ou mal adaptada?','Tem preferência por prótese fixa ou removível?'],
+  GENG:['Qual é o problema? (sangramento ao escovar, gengiva retraída, mau hálito, dente mole...)','Há quanto tempo está percebendo esse problema?','Faz consultas de rotina e limpeza com regularidade?','Tem histórico de periodontite ou já foi tratado antes?'],
+  ROT:['Há quanto tempo não vai ao dentista?','Tem alguma queixa específica ou é apenas para avaliação e limpeza?','Tem plano odontológico ou vai particular?','Prefere atendimento pela manhã, tarde ou noite?'],
+  PED:['Qual é a idade da criança?','É a primeira consulta ou a criança já tem acompanhamento?','A criança tem alguma queixa específica? (dor, cárie, dente caindo, freninho)','A criança tem medo de dentista ou alguma dificuldade especial?'],
+};
+
+var DOCS={
+  IMPL:'RG, CPF, exame de sangue recente (se tiver). Vamos solicitar a tomografia na avaliação.',
+  ORTO:'RG, CPF. Radiografia panorâmica recente é bem-vinda, mas não obrigatória.',
+  CLAR:'RG, CPF. Não é necessário documentação prévia.',
+  DOR:'RG, CPF. Se tiver radiografia recente, traga. Mas venha logo, cuidaremos de você!',
+  CANAL:'RG, CPF, radiografia do dente se tiver. Caso contrário, faremos aqui na clínica.',
+  PROT:'RG, CPF. Se tiver prótese antiga ou radiografias, traga para avaliação.',
+  GENG:'RG, CPF. Exames de sangue recentes são bem-vindos.',
+  ROT:'RG, CPF. Nada mais necessário — venha à vontade!',
+  PED:'RG e CPF da criança e do responsável.',
+};
+
+function tn(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function rsz(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,88)+'px';}
+function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}}
+function scr(){var m=document.getElementById('msgs');setTimeout(function(){m.scrollTo({top:m.scrollHeight,behavior:'smooth'});},50);}
+function setHint(t){document.getElementById('hint').textContent=t;}
+function on(h){document.getElementById('inp').disabled=false;document.getElementById('sbtn').disabled=false;if(h)setHint(h);setTimeout(function(){document.getElementById('inp').focus();},80);}
+function off(){document.getElementById('inp').disabled=true;document.getElementById('sbtn').disabled=true;}
+function esc(s){return(s||'').replace(/[<>]/g,function(c){return{'<':'&lt;','>':'&gt;'}[c];});}
+
+function setSt(n){
+  for(var i=0;i<5;i++){
+    var el=document.getElementById('ss'+i);if(!el)return;
+    var dot=el.querySelector('.ss-dot');
+    el.classList.remove('on','dn');
+    if(i<n){el.classList.add('dn');dot.textContent='✓';}
+    else if(i===n){el.classList.add('on');dot.textContent=i+1;}
+    else{dot.textContent=i+1;}
+  }
+}
+
+function renderDash(){
+  var aLabel='—',aIcon='';
+  for(var i=0;i<AREAS.length;i++){if(AREAS[i].k===S.area){aLabel=AREAS[i].label;aIcon=AREAS[i].icon;break;}}
+  var stBadge='<span class="badge b-gray">Aguardando</span>';
+  if(S.stage==='LGPD'||S.stage==='MENU')stBadge='<span class="badge b-cyan">LGPD OK</span>';
+  if(S.stage==='QUAL')stBadge='<span class="badge b-blue">Qualificando</span>';
+  if(S.stage==='VIAB')stBadge='<span class="badge b-yellow">Verificando...</span>';
+  if(S.viab==='viavel')stBadge='<span class="badge b-green">Qualificado ✓</span>';
+  if(S.viab==='inviavel')stBadge='<span class="badge b-red">Urgência</span>';
+  if(S.stage==='CONF')stBadge='<span class="badge b-green">Agendado ✓</span>';
+
+  var ansHtml='';
+  if(S.area&&QS[S.area]){
+    QS[S.area].forEach(function(q,j){
+      ansHtml+='<div class="ans-item"><div class="ans-q">'+q+'</div>'+(S.answers[j]?'<div class="ans-a">'+esc(S.answers[j])+'</div>':'<div class="ans-em">Aguardando...</div>')+'</div>';
+    });
+  } else {
+    ansHtml='<div class="ans-em">Aguardando seleção do tratamento...</div>';
+  }
+
+  var viabHtml='';
+  if(S.viab==='viavel')viabHtml='<div class="viab-card vv"><div class="viab-icon">✅</div><div><div class="viab-lbl">Paciente Qualificado</div><div class="viab-sub">Sofia identificou o tratamento ideal. Agendando consulta.</div></div></div>';
+  else if(S.viab==='inviavel')viabHtml='<div class="viab-card vi"><div class="viab-icon">⚡</div><div><div class="viab-lbl">Encaixe Urgente</div><div class="viab-sub">Paciente com dor aguda — encaixe prioritário no dia.</div></div></div>';
+
+  document.getElementById('dashBody').innerHTML=
+    '<div class="stage-card">'
+    +'<div class="stage-card-ttl">Progresso</div>'
+    +'<div id="ss0" class="ss"><div class="ss-dot">1</div><div><div class="ss-lbl">Boas-vindas & LGPD</div><div class="ss-s">Consentimento</div></div></div>'
+    +'<div id="ss1" class="ss"><div class="ss-dot">2</div><div><div class="ss-lbl">Tipo de Tratamento</div><div class="ss-s">O que o paciente precisa</div></div></div>'
+    +'<div id="ss2" class="ss"><div class="ss-dot">3</div><div><div class="ss-lbl">Qualificação</div><div class="ss-s">Perguntas específicas</div></div></div>'
+    +'<div id="ss3" class="ss"><div class="ss-dot">4</div><div><div class="ss-lbl">Verificação</div><div class="ss-s">Sofia avalia prioridade</div></div></div>'
+    +'<div id="ss4" class="ss"><div class="ss-dot">5</div><div><div class="ss-lbl">Agendamento</div><div class="ss-s">Consulta marcada</div></div></div>'
+    +'</div>'
+    +'<div class="lead-card"><div class="lead-card-ttl">Dados do Lead</div>'
+    +'<div class="lr"><span class="lk">Nome</span><span class="lv'+(S.nome?'':' em')+'">'+(S.nome||'—')+'</span></div>'
+    +'<div class="lr"><span class="lk">Tratamento</span><span class="lv'+(S.area?'':' em')+'">'+(S.area?aIcon+' '+aLabel:'—')+'</span></div>'
+    +'<div class="lr"><span class="lk">Status</span><span class="lv">'+stBadge+'</span></div>'
+    +'<div class="lr"><span class="lk">Respostas</span><span class="lv">'+S.answers.length+' / '+(S.area?QS[S.area].length:4)+'</span></div>'
+    +'<div class="lr"><span class="lk">Horário</span><span class="lv'+(S.horario?'':' em')+'">'+(S.horario||'—')+'</span></div>'
+    +'</div>'
+    +viabHtml
+    +'<div class="ans-card"><div class="ans-card-ttl">Respostas da Triagem</div>'+ansHtml+'</div>';
+
+  var stMap={NOME:0,LGPD:0,MENU:1,QUAL:2,VIAB:3,AGE:4,CONF:4,FIM:4};
+  setSt(stMap[S.stage]||0);
+}
+
+function bot(text,opts,delay){
+  delay=(delay===undefined)?900:delay;
+  return new Promise(function(resolve){
+    var wrap=document.getElementById('msgs');
+    var ty=document.createElement('div');ty.className='typr';
+    ty.innerHTML='<div class="m-av">🦷</div><div class="typb"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+    wrap.appendChild(ty);scr();
+    setTimeout(function(){
+      ty.remove();
+      var m=document.createElement('div');m.className='msg bot';
+      var html=text.replace(/\*(.*?)\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      var oh='';
+      if(opts&&opts.length){
+        oh='<div class="opts">';
+        opts.forEach(function(o){oh+='<button class="opt" onclick="pick(\''+o.k+'\',\''+o.label.replace(/'/g,'&#39;')+'\',this)"><span class="oi">'+o.icon+'</span><div><div class="ol">'+o.label+'</div><div class="os">'+(o.sub||'')+'</div></div></button>';});
+        oh+='</div>';
+      }
+      m.innerHTML='<div class="m-av">🦷</div><div><div class="bub">'+html+oh+'</div><div class="mtime">'+tn()+'</div></div>';
+      wrap.appendChild(m);scr();resolve();
+    },delay+Math.floor(Math.random()*400));
+  });
+}
+
+function usr(text){
+  var wrap=document.getElementById('msgs'),m=document.createElement('div');m.className='msg usr';
+  m.innerHTML='<div><div class="bub">'+esc(text).replace(/\n/g,'<br>')+'</div><div class="mtime">'+tn()+' ✓✓</div></div>';
+  wrap.appendChild(m);scr();
+}
+
+function pick(k,label,btn){
+  btn.closest('.opts').querySelectorAll('.opt').forEach(function(b){b.classList.add('picked');});
+  btn.classList.remove('picked');btn.classList.add('picked-win');
+  usr(label);off();proc(k);
+}
+
+function doSend(){
+  var inp=document.getElementById('inp'),v=inp.value.trim();
+  if(!v)return;
+  inp.value='';inp.style.height='auto';
+  usr(v);off();proc(v);
+}
+
+function proc(input){
+  var v=(input||'').trim(),up=v.toUpperCase();
+
+  if(S.stage==='NOME'){
+    S.nome=v;S.stage='LGPD';renderDash();
+    var fn=v.split(' ')[0];
+    bot('Olá, *'+fn+'*! 😊 Que bom ter você aqui!\n\nAntes de continuarmos, preciso do seu consentimento conforme a *LGPD*.\n\nSeus dados serão usados *exclusivamente* para fins de atendimento odontológico.\n\n*Você concorda?*',
+      [{k:'SIM',icon:'✅',label:'Sim, concordo',sub:'Meus dados estão seguros'},{k:'NAO',icon:'❌',label:'Não, prefiro encerrar',sub:''}]
+    ).then(function(){on('Clique em uma opção');});
+    return;
+  }
+
+  if(S.stage==='LGPD'){
+    if(up==='SIM'||up==='S'||up.indexOf('CONCORDO')>-1){
+      S.stage='MENU';renderDash();
+      bot('Perfeito! ✅ Dados protegidos.\n\nMe conta — *o que você precisa hoje?* 🦷\n\nEscolha o tipo de atendimento:',AREAS)
+        .then(function(){on('Clique no tratamento desejado');});
+    } else {
+      S.stage='FIM';renderDash();
+      bot('Tudo bem! 😊 Sem o consentimento não consigo prosseguir.\n\nSe precisar de nós, é só chamar. Até logo!')
+        .then(function(){setHint('Encerrado. Clique em reiniciar.');});
+    }
+    return;
+  }
+
+  if(S.stage==='MENU'){
+    var area=null;
+    for(var i=0;i<AREAS.length;i++){var a=AREAS[i];if(a.k===up||a.label.toUpperCase()===up||up.indexOf(a.k)>-1||a.label.toUpperCase().indexOf(up)>-1){area=a;break;}}
+    if(area){
+      S.area=area.k;S.answers=[];S.qi=0;S.stage='QUAL';renderDash();
+      bot(area.icon+' *'+area.label+'*\n\nÓtimo! Vou fazer *'+QS[area.k].length+' perguntas rápidas* para agilizar seu atendimento. 😊')
+        .then(function(){askQ();});
+    } else {
+      bot('Por favor, *escolha uma das opções* clicando em um dos botões acima. 😊').then(function(){on();});
+    }
+    return;
+  }
+
+  if(S.stage==='QUAL'){
+    S.answers.push(v);S.qi++;renderDash();
+    if(S.qi<QS[S.area].length){askQ();}
+    else{
+      S.stage='VIAB';renderDash();
+      bot('Anotei tudo! 📋\n\n*Verificando agenda e disponibilidade...* ⏳').then(function(){doViab();});
+    }
+    return;
+  }
+
+  if(S.stage==='AGE'){
+    S.horario=v;S.stage='CONF';S.viab='viavel';renderDash();
+    confirmar(v);
+    return;
+  }
+
+  on();
+}
+
+function askQ(){
+  var qs=QS[S.area],q=qs[S.qi],tot=qs.length;
+  bot('*Pergunta '+(S.qi+1)+' de '+tot+'*\n\n'+q).then(function(){on('Responda com suas palavras ('+(S.qi+1)+'/'+tot+')');});
+}
+
+function doViab(){
+  setTimeout(function(){
+    var urgencia=(S.area==='DOR'&&Math.random()>0.3)||(S.area==='CANAL'&&Math.random()>0.5);
+    var fn=S.nome.split(' ')[0],lbl='';
+    for(var i=0;i<AREAS.length;i++){if(AREAS[i].k===S.area){lbl=AREAS[i].label;break;}}
+
+    if(urgencia){
+      S.viab='inviavel';S.stage='AGE';renderDash();
+      bot('⚡ *'+fn+', identificamos urgência!*\n\nSua situação precisa de atenção hoje. Vou verificar um encaixe prioritário para você.\n\n📅 *Horários disponíveis hoje:*\n• *14h30*\n• *16h00*\n• *17h30*\n• *19h00*\n\nQual horário funciona?')
+        .then(function(){on('Ex: 16h00');});
+    } else {
+      S.viab='viavel';S.stage='AGE';renderDash();
+      bot('✅ *Tudo certo, '+fn+'!*\n\nEm *'+lbl+'* temos ótimas opções para você. 😊\n\n📅 *Horários disponíveis:*\n• *Segunda* — 9h · 10h · 14h · 16h\n• *Terça* — 8h · 10h · 15h · 17h\n• *Quarta* — 9h · 11h · 14h · 16h\n• *Quinta* — 8h · 10h · 14h · 15h\n• *Sexta* — 9h · 10h · 14h\n\nQual dia e horário prefere?')
+        .then(function(){on('Ex: Quarta às 14h');});
+    }
+  },2800);
+}
+
+function confirmar(pref){
+  var fn=S.nome.split(' ')[0],docs=DOCS[S.area]||'RG e CPF.';
+  var isUrgencia=(S.viab==='inviavel');
+  bot((isUrgencia?'⚡':'✅')+' *Consulta confirmada!*\n\n*'+fn+'*, agendado para *'+pref+'*! '+(isUrgencia?'🚨':'🎉')+'\n\nVocê receberá um *lembrete 1 hora antes* aqui no WhatsApp.\n\n📋 *O que trazer:* '+docs+'\n\nNossa equipe está te esperando! 😊')
+    .then(function(){
+      setTimeout(function(){
+        bot('PS: Qualquer dúvida antes da consulta, pode nos chamar aqui. 🦷')
+          .then(function(){setHint('✅ Agendado! Clique em reiniciar para ver novamente.');});
+      },1200);
+    });
+}
+
+function start(){
+  S={stage:'NOME',nome:'',area:'',answers:[],qi:0,viab:'',horario:''};
+  document.getElementById('dashBody').innerHTML='<div class="empty"><div class="empty-ic">📋</div><h4>Aguardando interação</h4><p>Os dados aparecem aqui conforme o paciente preenche o chat.</p></div>';
+  off();setHint('Aguarde...');
+  bot('Olá! 👋 Seja bem-vindo(a) à nossa clínica odontológica.\n\nMeu nome é *Sofia*, assistente virtual. Estou aqui para agilizar seu atendimento e encontrar o melhor horário para você. 🦷\n\n*Como posso te chamar?*')
+    .then(function(){on('Digite seu nome...');});
+}
+
+function restart(){
+  document.getElementById('msgs').innerHTML='<div class="dsep">Hoje</div>';
+  document.getElementById('inp').value='';
+  document.getElementById('inp').style.height='auto';
+  start();
+}
+
+window.onload=function(){
+  buildLeadsTable();
+  buildAgenda();
+  setTimeout(start,600);
+};
+
+function openSb(){
+  document.querySelector('.sidebar').classList.add('open');
+  document.getElementById('sbOverlay').classList.add('on');
+}
+function closeSb(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sbOverlay').classList.remove('on');
+}
+</script>
+</body>
+</html>

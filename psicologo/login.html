@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedAtend — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--teal-500:#14B8A6;--teal-600:#0D9488;--teal-700:#0F766E;--r:8px;--r-lg:12px;}
+[data-theme="light"]{--bg:#F0F4FF;--surface:#fff;--border:#E2E8F7;--tx:#0A1628;--tx-2:#2D3A55;--tx-3:#5A6A8A;--tx-4:#8FA0BF;--red-bg:#FEE2E2;--red-bd:#FECACA;--red-tx:#B91C1C;}
+[data-theme="dark"]{--bg:#070D1A;--surface:#0C1525;--border:#1A2A42;--tx:#E8EEFF;--tx-2:#B0BEDD;--tx-3:#6A82A8;--tx-4:#3D5070;--red-bg:#1C0808;--red-bd:#7F1D1D;--red-tx:#F87171;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;-webkit-font-smoothing:antialiased;}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:grid;grid-template-columns:1fr 1fr;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;}
+input{font-family:inherit;outline:none;}
+.lp-left{background:linear-gradient(145deg,#071440 0%,#0D2060 40%,#0A3A6B 70%,#063560 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:44px 52px;min-height:100vh;}
+.lp-left::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 15% 75%,rgba(20,184,166,.15) 0%,transparent 50%),radial-gradient(circle at 85% 20%,rgba(37,99,235,.2) 0%,transparent 50%);}
+.lp-left::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:48px 48px;}
+.lp-z{position:relative;z-index:1;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{width:42px;height:42px;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,rgba(20,184,166,.25),rgba(37,99,235,.35));border:1px solid rgba(20,184,166,.3);display:flex;align-items:center;justify-content:center;}
+.brand-mark svg{width:20px;height:20px;color:#fff;}
+.brand-name{font-size:21px;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.brand-name em{font-style:normal;color:#2DD4BF;}
+.brand-by{font-size:10px;color:rgba(255,255,255,.35);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.22);border-radius:99px;padding:4px 12px;margin-bottom:22px;font-size:11px;font-weight:700;color:#2DD4BF;letter-spacing:.04em;text-transform:uppercase;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:#2DD4BF;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero h2{font-size:36px;font-weight:900;color:#fff;line-height:1.12;letter-spacing:-.7px;margin-bottom:16px;}
+.hero h2 em{font-style:normal;background:linear-gradient(135deg,#2DD4BF,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:14px;color:rgba(255,255,255,.48);line-height:1.7;max-width:360px;}
+.feats{display:flex;flex-direction:column;gap:10px;}
+.feat{display:flex;align-items:center;gap:12px;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;font-size:12px;color:rgba(255,255,255,.65);font-weight:500;}
+.feat-ic{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:rgba(20,184,166,.15);border:1px solid rgba(20,184,166,.2);display:flex;align-items:center;justify-content:center;}
+.feat-ic svg{width:13px;height:13px;color:#2DD4BF;}
+.lp-right{display:flex;align-items:center;justify-content:center;padding:48px 52px;background:var(--bg);}
+.form-wrap{width:100%;max-width:380px;}
+.form-head{margin-bottom:28px;}
+.form-head h1{font-size:24px;font-weight:900;color:var(--tx);letter-spacing:-.5px;margin-bottom:5px;}
+.form-head p{font-size:13px;color:var(--tx-3);line-height:1.6;}
+.err-box{display:none;padding:10px 13px;margin-bottom:16px;background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r);color:var(--red-tx);font-size:12.5px;}
+.form{display:flex;flex-direction:column;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.lbl{font-size:11px;font-weight:700;color:var(--tx-2);text-transform:uppercase;letter-spacing:.04em;}
+.inp-wrap{position:relative;}
+.inp-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tx-4);pointer-events:none;}
+.inp-ico svg{width:15px;height:15px;}
+.inp{width:100%;height:44px;padding:0 13px 0 38px;border:1.5px solid var(--border);border-radius:var(--r-lg);background:var(--surface);color:var(--tx);font-size:13px;transition:border-color .15s,box-shadow .15s;font-family:inherit;}
+.inp:focus{border-color:var(--teal-500);box-shadow:0 0 0 3px rgba(20,184,166,.1);}
+.inp::placeholder{color:var(--tx-4);}
+.submit-btn{height:46px;width:100%;margin-top:2px;background:linear-gradient(135deg,var(--teal-700),var(--teal-600));color:#fff;border:none;border-radius:var(--r-lg);font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:opacity .15s;box-shadow:0 4px 14px rgba(13,148,136,.28);}
+.submit-btn:hover{opacity:.91;}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;}
+.theme-btn{position:fixed;top:16px;right:16px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);color:var(--tx-3);cursor:pointer;z-index:100;}
+.theme-btn svg{width:15px;height:15px;}
+@media(max-width:768px){body{grid-template-columns:1fr;}.lp-left{display:none;}.lp-right{padding:32px 24px;}}
+</style>
+</head>
+<body>
+<button class="theme-btn" onclick="toggleTheme()">
+  <svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+
+<div class="lp-left">
+  <div class="lp-z brand">
+    <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+    <div><div class="brand-name">Med<em>Atend</em></div><div class="brand-by">by ProspectIA</div></div>
+  </div>
+  <div class="lp-z hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span>Atendimento Inteligente</div>
+    <h2>Recepcione mais.<br><em>Trabalhe menos.</em></h2>
+    <p>Bot de triagem no WhatsApp, agendamento automatico, lembretes 24h e prontuario eletronico integrados.</p>
+  </div>
+  <div class="lp-z feats">
+    <div class="feat"><div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>Bot de triagem 24h no WhatsApp</div>
+    <div class="feat"><div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Agendamento automatico sem esforco</div>
+    <div class="feat"><div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Prontuario eletronico seguro</div>
+    <div class="feat"><div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>Dashboard com metricas em tempo real</div>
+  </div>
+</div>
+
+<div class="lp-right">
+  <div class="form-wrap">
+    <div class="form-head"><h1>Acesse sua conta</h1><p>Entre com o e-mail e senha cadastrados no MedAtend.</p></div>
+    <div class="err-box" id="errBox"></div>
+    <div class="form">
+      <div class="fg">
+        <label class="lbl">E-mail</label>
+        <div class="inp-wrap">
+          <div class="inp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <input id="email" type="email" class="inp" placeholder="clinica@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+      <div class="fg">
+        <label class="lbl">Senha</label>
+        <div class="inp-wrap">
+          <div class="inp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <input id="senha" type="password" class="inp" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+      <button id="loginBtn" class="submit-btn" onclick="doLogin()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SB = 'SUA_URL_SUPABASE'; // ex: https://xxxx.supabase.co
+const SK = 'SUA_SERVICE_ROLE_KEY';
+const H = { 'apikey': SK, 'Authorization': 'Bearer ' + SK, 'Content-Type': 'application/json' };
+
+async function doLogin() {
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('errBox');
+  if (!email || !senha) { err.textContent = 'Preencha e-mail e senha.'; err.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Verificando...'; err.style.display = 'none';
+  try {
+    const r = await fetch(`${SB}/rest/v1/receptivo_clientes_v1?email=eq.${encodeURIComponent(email)}&senha=eq.${encodeURIComponent(senha)}&status=eq.ativo&select=id,nome_clinica,email,plano,status,instancia_whatsapp,evolution_url,evolution_key,percentual_repasse&limit=1`, { headers: H });
+    const d = await r.json();
+    if (!d || !d.length) { err.textContent = 'E-mail ou senha incorretos, ou conta inativa.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Entrar'; return; }
+    sessionStorage.setItem('ma_u', JSON.stringify(d[0]));
+    window.location.href = 'medatend_app.html';
+  } catch(e) { err.textContent = 'Erro de conexao. Verifique sua internet.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Entrar'; }
+}
+
+function toggleTheme() {
+  const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('ma_theme', t);
+  applyIco(t);
+}
+function applyIco(t) {
+  const i = document.getElementById('themeIco');
+  if (!i) return;
+  i.innerHTML = t === 'dark' ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>' : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+(function(){ const t = localStorage.getItem('ma_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); document.addEventListener('DOMContentLoaded', () => applyIco(t)); })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedAtend</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal-400:#2DD4BF;--teal-500:#14B8A6;--teal-600:#0D9488;--teal-700:#0F766E;
+  --blue-400:#60A5FA;--blue-500:#3B82F6;--blue-600:#2563EB;--blue-700:#1D4ED8;
+  --blue-50:#EFF6FF;--blue-100:#DBEAFE;
+  --green:#10B981;--green-bg:#D1FAE5;--green-bd:#6EE7B7;
+  --red:#EF4444;--red-bg:#FEE2E2;--red-bd:#FECACA;
+  --yellow:#F59E0B;--yellow-bg:#FEF3C7;--yellow-bd:#FDE68A;
+  --orange:#F97316;--orange-bg:#FFEDD5;
+  --purple:#8B5CF6;--purple-bg:#EDE9FE;
+  --sb-w:238px;--tb-h:54px;
+  --r:6px;--r-lg:10px;--r-xl:14px;
+  --sh0:0 1px 3px rgba(0,0,0,.06);--sh1:0 2px 8px rgba(0,0,0,.09);
+  --tr:140ms ease;
+}
+[data-theme="light"]{
+  --bg:#F0F5FC;--sf:#fff;--sf2:#F4F7FF;--sf3:#E8EEFA;
+  --bd:#E2E8F5;--bd2:#CDD5ED;
+  --tx:#0A1628;--tx2:#2D3A55;--tx3:#5A6A8A;--tx4:#8FA0BF;
+  --sb:#fff;--sb-bd:#E8EDF7;--sb-hv:#F4F7FF;
+  --sb-ab:rgba(13,148,136,.08);--sb-at:#0F766E;--sb-ai:#14B8A6;
+  --sb-tx:#3D4D6A;--sb-lb:#9AAAC5;
+  --tb:#fff;
+}
+[data-theme="dark"]{
+  --bg:#070D1A;--sf:#0C1525;--sf2:#111E30;--sf3:#162035;
+  --bd:#1A2A42;--bd2:#243650;
+  --tx:#E8EEFF;--tx2:#B0BEDD;--tx3:#6A82A8;--tx4:#3D5070;
+  --sb:#08111E;--sb-bd:#132030;--sb-hv:#111E30;
+  --sb-ab:rgba(20,184,166,.1);--sb-at:#2DD4BF;--sb-ai:#14B8A6;
+  --sb-tx:#7A95B8;--sb-lb:#2D4060;
+  --tb:#08111E;
+  --blue-50:rgba(30,58,138,.12);--blue-100:rgba(30,58,138,.22);
+  --green-bg:#022C22;--green-bd:#065F46;
+  --red-bg:#1C0808;--red-bd:#7F1D1D;
+  --yellow-bg:#1C1000;--yellow-bd:#78350F;
+  --orange-bg:#1C0C02;--purple-bg:#150D2E;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;-webkit-font-smoothing:antialiased;}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden;line-height:1.5;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;}
+input,textarea,select{font-family:inherit;font-size:inherit;outline:none;}
+a{color:inherit;text-decoration:none;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:99px;}
+
+/* SHELL */
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb-w);flex-shrink:0;background:var(--sb);border-right:1px solid var(--sb-bd);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.s-logo{padding:13px 14px 12px;border-bottom:1px solid var(--sb-bd);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.s-logo-ic{width:33px;height:33px;border-radius:9px;background:linear-gradient(135deg,var(--teal-600),var(--teal-700));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(13,148,136,.28);flex-shrink:0;}
+.s-logo-ic svg{color:#fff;width:15px;height:15px;}
+.s-logo-tx{font-size:15px;font-weight:900;letter-spacing:-.4px;color:var(--tx);}
+.s-logo-tx em{font-style:normal;color:var(--teal-600);}
+.s-logo-by{font-size:9px;color:var(--tx4);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
+.s-nav{flex:1;overflow-y:auto;padding:8px;}
+.s-lb{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--sb-lb);padding:10px 8px 5px;}
+.s-lb:first-child{padding-top:4px;}
+.s-item{display:flex;align-items:center;gap:9px;height:34px;padding:0 9px;border-radius:7px;color:var(--sb-tx);font-size:13px;font-weight:500;width:100%;text-align:left;transition:background var(--tr),color var(--tr);white-space:nowrap;}
+.s-item .ic{width:14px;height:14px;flex-shrink:0;color:var(--tx4);transition:color var(--tr);}
+.s-item:hover{background:var(--sb-hv);color:var(--tx);}
+.s-item:hover .ic{color:var(--tx3);}
+.s-item.on{background:var(--sb-ab);color:var(--sb-at);font-weight:600;}
+.s-item.on .ic{color:var(--sb-ai);}
+.s-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;line-height:16px;min-width:18px;text-align:center;}
+.s-bdg-teal{margin-left:auto;background:var(--green-bg);color:var(--teal-700);font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;line-height:16px;}
+[data-theme="dark"] .s-bdg-teal{color:var(--teal-400);}
+.s-footer{padding:8px 8px 10px;border-top:1px solid var(--sb-bd);flex-shrink:0;}
+.s-user{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:background var(--tr);}
+.s-user:hover{background:var(--sb-hv);}
+.s-av{width:29px;height:29px;border-radius:7px;background:linear-gradient(135deg,var(--teal-600),var(--teal-700));color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.s-un{font-size:12px;font-weight:700;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.plan-chip{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;text-transform:uppercase;letter-spacing:.03em;}
+.plan-starter{background:var(--sf3);color:var(--tx3);}
+.plan-plus{background:var(--blue-100);color:var(--blue-700);}
+.plan-pro{background:var(--yellow-bg);color:#92400E;}
+.plan-business{background:var(--purple-bg);color:#5B21B6;}
+[data-theme="dark"] .plan-plus{color:var(--blue-400);}
+[data-theme="dark"] .plan-pro{color:#FCD34D;}
+[data-theme="dark"] .plan-business{color:#A78BFA;}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.topbar{height:var(--tb-h);background:var(--tb);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;gap:12px;}
+.tb-l{display:flex;align-items:center;gap:8px;}
+.tb-title{font-size:15px;font-weight:800;color:var(--tx);letter-spacing:-.2px;}
+.tb-r{display:flex;align-items:center;gap:7px;}
+.wa-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--sf2);border:1px solid var(--bd);border-radius:7px;font-size:12px;font-weight:500;color:var(--tx3);}
+.wa-dot{width:6px;height:6px;border-radius:50%;background:var(--tx4);flex-shrink:0;}
+.wa-pill.on{background:var(--green-bg);border-color:var(--green-bd);color:#047857;}
+.wa-pill.on .wa-dot{background:var(--green);box-shadow:0 0 0 2px rgba(16,185,129,.2);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.ic-btn{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--tx3);transition:background var(--tr),color var(--tr);}
+.ic-btn:hover{background:var(--sf2);color:var(--tx);}
+.ic-btn svg{width:15px;height:15px;}
+.menu-btn{display:none;}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:24px 22px 22px;}
+.page{display:none;}
+.page.on{display:block;}
+.ph{margin-bottom:20px;}
+.ph-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.ph h1{font-size:18px;font-weight:900;letter-spacing:-.4px;color:var(--tx);}
+.ph p{font-size:12px;color:var(--tx3);margin-top:3px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 13px;height:30px;border-radius:var(--r);font-size:12px;font-weight:700;transition:all var(--tr);white-space:nowrap;flex-shrink:0;}
+.btn svg{width:12px;height:12px;}
+.btn-p{background:var(--teal-600);color:#fff;}
+.btn-p:hover{background:var(--teal-700);}
+.btn-s{background:var(--sf2);color:var(--tx2);border:1.5px solid var(--bd);}
+.btn-s:hover{background:var(--sf3);}
+.btn-g{background:transparent;color:var(--tx3);border:1.5px solid var(--bd);}
+.btn-g:hover{background:var(--sf2);color:var(--tx);}
+.btn-sm{height:27px;padding:0 10px;font-size:11px;}
+.btn-danger{background:var(--red-bg);color:#B91C1C;border:1.5px solid var(--red-bd);}
+
+/* CARDS */
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh0);}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--bd);}
+.card-title{font-size:13px;font-weight:700;color:var(--tx);}
+.card-sub{font-size:11px;color:var(--tx3);margin-top:1px;}
+.card-body{padding:14px 16px;}
+.card-foot{padding:10px 16px;border-top:1px solid var(--bd);background:var(--sf2);border-radius:0 0 var(--r-xl) var(--r-xl);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-xl);padding:14px 16px;position:relative;overflow:hidden;box-shadow:var(--sh0);}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-xl) var(--r-xl) 0 0;}
+.stat.c-teal::after{background:var(--teal-500);}
+.stat.c-blue::after{background:var(--blue-500);}
+.stat.c-green::after{background:var(--green);}
+.stat.c-yellow::after{background:var(--yellow);}
+.stat.c-red::after{background:var(--red);}
+.stat.c-purple::after{background:var(--purple);}
+.stat-lb{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);margin-bottom:5px;}
+.stat-val{font-size:24px;font-weight:900;color:var(--tx);line-height:1;letter-spacing:-.5px;}
+.stat-sub{font-size:11px;color:var(--tx3);margin-top:4px;}
+.stat-sub.up{color:var(--green);}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;}
+.b-teal{background:var(--green-bg);color:var(--teal-700);}
+.b-blue{background:var(--blue-100);color:var(--blue-700);}
+.b-green{background:var(--green-bg);color:#047857;}
+.b-yellow{background:var(--yellow-bg);color:#92400E;}
+.b-red{background:var(--red-bg);color:#B91C1C;}
+.b-gray{background:var(--sf3);color:var(--tx3);border:1px solid var(--bd);}
+.b-purple{background:var(--purple-bg);color:#5B21B6;}
+[data-theme="dark"] .b-teal{color:var(--teal-400);}
+[data-theme="dark"] .b-blue{color:var(--blue-400);}
+[data-theme="dark"] .b-green{color:#34D399;}
+[data-theme="dark"] .b-yellow{color:#FCD34D;}
+[data-theme="dark"] .b-red{color:#F87171;}
+[data-theme="dark"] .b-purple{color:#A78BFA;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{text-align:left;padding:8px 13px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tx3);background:var(--sf2);border-bottom:1px solid var(--bd);white-space:nowrap;}
+td{padding:10px 13px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tbody tr{transition:background var(--tr);}
+tbody tr:hover{background:var(--sf2);}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.flex{display:flex;}.ic{align-items:center;}.jb{justify-content:space-between;}
+.gap-6{gap:6px;}.gap-8{gap:8px;}.gap-10{gap:10px;}.gap-12{gap:12px;}
+.flex-1{flex:1;}.mt-4{margin-top:4px;}.mt-8{margin-top:8px;}.mt-12{margin-top:12px;}.mt-16{margin-top:16px;}
+.mb-4{margin-bottom:4px;}.mb-8{margin-bottom:8px;}.mb-12{margin-bottom:12px;}
+.fw7{font-weight:700;}.fw8{font-weight:800;}.tsm{font-size:12px;}.txs{font-size:11px;}.tc3{color:var(--tx3);}.tc2{color:var(--tx2);}
+
+/* PROGRESS */
+.prog-bar{height:5px;background:var(--sf3);border-radius:99px;overflow:hidden;margin-bottom:3px;}
+.prog-fill{height:100%;border-radius:99px;background:var(--teal-500);transition:width .4s ease;}
+.prog-fill.b{background:var(--blue-500);}
+.prog-fill.g{background:var(--green);}
+.prog-fill.y{background:var(--yellow);}
+
+/* FUNNEL */
+.fn-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fn-lb{font-size:11px;color:var(--tx3);width:150px;flex-shrink:0;}
+.fn-bar{flex:1;height:22px;background:var(--sf2);border-radius:4px;overflow:hidden;}
+.fn-fill{height:100%;background:linear-gradient(90deg,var(--teal-500),var(--blue-500));border-radius:4px;transition:width .5s ease;}
+.fn-val{font-size:12px;font-weight:700;color:var(--tx);width:32px;text-align:right;flex-shrink:0;}
+.fn-pct{font-size:10px;color:var(--teal-600);font-weight:700;width:34px;text-align:right;flex-shrink:0;}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:10px;position:relative;padding-bottom:12px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:10px;top:22px;bottom:0;width:1px;background:var(--bd);}
+.tl-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:2px;}
+.tl-dot.teal{background:var(--green-bg);color:var(--teal-700);}
+.tl-dot.blue{background:var(--blue-100);color:var(--blue-700);}
+.tl-dot.gray{background:var(--sf3);color:var(--tx4);}
+.tl-dot.yellow{background:var(--yellow-bg);color:#92400E;}
+[data-theme="dark"] .tl-dot.teal{color:var(--teal-400);}
+[data-theme="dark"] .tl-dot.blue{color:var(--blue-400);}
+.tl-title{font-size:12px;font-weight:600;color:var(--tx);}
+.tl-sub{font-size:11px;color:var(--tx3);margin-top:1px;}
+.tl-time{font-size:10px;color:var(--tx4);margin-top:1px;}
+
+/* AVATAR */
+.av-row{display:flex;align-items:center;gap:8px;}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--teal-500),var(--teal-700));color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.av.b{background:linear-gradient(135deg,var(--blue-500),var(--blue-700));}
+.av.y{background:linear-gradient(135deg,#F59E0B,#D97706);}
+.av.p{background:linear-gradient(135deg,var(--purple),#6D28D9);}
+.av.g{background:linear-gradient(135deg,#10B981,#059669);}
+
+/* AREA ROW */
+.area-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);}
+.area-row:last-child{border-bottom:none;}
+.area-ic{width:28px;height:28px;border-radius:7px;background:var(--sf2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.area-ic svg{width:13px;height:13px;color:var(--tx3);}
+.area-name{font-size:12px;font-weight:600;color:var(--tx);}
+.area-cnt{font-size:11px;color:var(--tx3);}
+
+/* DONUT */
+.donut-wrap{display:flex;align-items:center;gap:14px;}
+.donut{position:relative;width:88px;height:88px;flex-shrink:0;}
+.donut svg{transform:rotate(-90deg);}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.donut-val{font-size:17px;font-weight:900;color:var(--tx);}
+.donut-lb{font-size:9px;color:var(--tx4);text-transform:uppercase;letter-spacing:.05em;}
+.dl-item{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.dl-item:last-child{margin-bottom:0;}
+.dl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.dl-nm{font-size:11px;color:var(--tx3);}
+.dl-pct{font-size:11px;font-weight:700;color:var(--tx);margin-left:auto;}
+
+/* ALERT */
+.alert{display:flex;align-items:flex-start;gap:8px;padding:10px 13px;border-radius:var(--r-lg);font-size:12px;line-height:1.5;}
+.alert svg{flex-shrink:0;margin-top:1px;}
+.alert-info{background:var(--blue-50);border:1px solid var(--blue-100);color:var(--blue-700);}
+.alert-teal{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--teal-700);}
+.alert-yellow{background:var(--yellow-bg);border:1px solid var(--yellow-bd);color:#92400E;}
+[data-theme="dark"] .alert-info{color:var(--blue-400);}
+[data-theme="dark"] .alert-teal{color:var(--teal-400);}
+[data-theme="dark"] .alert-yellow{color:#FCD34D;}
+
+/* FORM INPUTS */
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg label{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.finp{height:34px;background:var(--sf2);border:1.5px solid var(--bd);border-radius:var(--r);padding:0 10px;color:var(--tx);font-size:12.5px;width:100%;transition:border-color .15s;font-family:inherit;}
+.finp:focus{border-color:var(--teal-500);background:var(--sf);}
+.finp-area{background:var(--sf2);border:1.5px solid var(--bd);border-radius:var(--r);padding:8px 10px;color:var(--tx);font-size:12.5px;width:100%;resize:vertical;min-height:70px;transition:border-color .15s;font-family:inherit;line-height:1.5;}
+.finp-area:focus{border-color:var(--teal-500);background:var(--sf);}
+select.finp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%238FA0BF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:26px;}
+.cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cfg-full{grid-column:1/-1;}
+
+/* TOGGLE */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd);}
+.tog-row:last-child{border-bottom:none;}
+.tog-info h4{font-size:12.5px;font-weight:600;color:var(--tx);}
+.tog-info p{font-size:11px;color:var(--tx3);margin-top:1px;}
+.tog{position:relative;width:38px;height:21px;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;position:absolute;}
+.tog-sl{position:absolute;inset:0;background:var(--bd2);border-radius:99px;cursor:pointer;transition:.2s;}
+.tog-sl::before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;}
+.tog input:checked+.tog-sl{background:var(--teal-500);}
+.tog input:checked+.tog-sl::before{transform:translateX(17px);}
+
+/* EMPTY STATE */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;color:var(--tx4);}
+.empty-ic{margin-bottom:10px;opacity:.4;}
+.empty-ic svg{width:32px;height:32px;}
+.empty h4{font-size:13px;font-weight:600;color:var(--tx3);margin-bottom:4px;}
+.empty p{font-size:11px;line-height:1.6;max-width:240px;color:var(--tx4);}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:32px;color:var(--tx3);gap:8px;font-size:12px;}
+.spin{width:16px;height:16px;border:2px solid var(--bd);border-top-color:var(--teal-500);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* AGENDA ITEM */
+.ag-item{display:flex;align-items:center;gap:12px;padding:10px 13px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:7px;transition:background var(--tr);}
+.ag-item:hover{background:var(--sf2);}
+.ag-date{width:34px;text-align:center;flex-shrink:0;}
+.ag-day{font-size:17px;font-weight:900;color:var(--tx);line-height:1;}
+.ag-mon{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;}
+.ag-info{flex:1;}
+.ag-name{font-size:12.5px;font-weight:700;color:var(--tx);}
+.ag-area{font-size:11px;color:var(--tx3);margin-top:1px;}
+.ag-time{font-size:11px;color:var(--tx4);margin-top:2px;display:flex;align-items:center;gap:3px;}
+
+/* PRONTUARIO */
+.pac-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background var(--tr);}
+.pac-item:hover,.pac-item.sel{background:var(--sf2);}
+.pac-item.sel{border-left:3px solid var(--teal-500);}
+.pac-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal-500),var(--teal-700));color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.pront-entry{padding:14px 16px;border-bottom:1px solid var(--bd);}
+.pront-entry:last-child{border-bottom:none;}
+.pront-dt{font-size:11px;font-weight:700;color:var(--teal-600);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
+.pront-lb{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx4);margin-bottom:2px;}
+.pront-vl{font-size:12.5px;color:var(--tx2);line-height:1.5;}
+
+/* MOBILE */
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:998;}
+.sb-overlay.on{display:block;}
+@media(max-width:768px){
+  .menu-btn{display:flex;}
+  .sidebar{position:fixed;transform:translateX(-100%);left:0;top:0;z-index:999;height:100vh;box-shadow:4px 0 24px rgba(0,0,0,.2);transition:transform .25s ease;}
+  .sidebar.open{transform:translateX(0);}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .g2,.g3{grid-template-columns:1fr;}
+  .content{padding:16px 12px;}
+  .cfg-grid{grid-template-columns:1fr;}
+}
+@media(max-width:480px){.stats-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="s-logo">
+    <div class="s-logo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+    <div><div class="s-logo-tx">Med<em>Atend</em></div><div class="s-logo-by">by ProspectIA</div></div>
+  </div>
+  <nav class="s-nav">
+    <div class="s-lb">Visao Geral</div>
+    <button class="s-item on" onclick="nav('dash',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
+    <div class="s-lb">Atendimento</div>
+    <button class="s-item" onclick="nav('leads',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Leads<span class="s-bdg-teal" id="bdgLeads">0</span></button>
+    <button class="s-item" onclick="nav('agenda',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Agendamentos</button>
+    <button class="s-item" onclick="nav('lembretes',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Lembretes<span class="s-badge" id="bdgLemb">0</span></button>
+    <button class="s-item" onclick="nav('confirmacoes',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Confirmacoes</button>
+    <div class="s-lb">Clinica</div>
+    <button class="s-item" onclick="nav('pacientes',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Pacientes</button>
+    <button class="s-item" onclick="nav('prontuario',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Prontuarios</button>
+    <button class="s-item" onclick="nav('prescricao',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="11" y2="16"/></svg>Prescricoes</button>
+    <button class="s-item" onclick="nav('profissionais',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Profissionais</button>
+    <div class="s-lb">Financeiro</div>
+    <button class="s-item" onclick="nav('financeiro',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Financeiro</button>
+    <button class="s-item" onclick="nav('campanhas',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Campanhas<span class="s-badge" style="background:var(--yellow);color:#000;font-size:9px;">PRO</span></button>
+    <div class="s-lb">Sistema</div>
+    <button class="s-item" onclick="nav('relatorios',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Relatorios</button>
+    <button class="s-item" onclick="nav('config-bot',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Config. Bot</button>
+    <button class="s-item" onclick="nav('config',this)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Configuracoes</button>
+  </nav>
+  <div class="s-footer">
+    <div class="s-user">
+      <div class="s-av" id="sbAv">--</div>
+      <div style="flex:1;min-width:0;">
+        <div class="s-un" id="sbNome">Carregando...</div>
+        <span class="plan-chip plan-starter" id="sbPlano">...</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <div class="tb-l">
+      <button class="ic-btn menu-btn" onclick="openSb()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <span class="tb-title" id="topTitle">Dashboard</span>
+    </div>
+    <div class="tb-r">
+      <div class="wa-pill" id="waPill"><div class="wa-dot"></div><span id="waStatus">Verificando...</span></div>
+      <button class="ic-btn" onclick="toggleTheme()"><svg id="themeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+      <button class="btn btn-g btn-sm" onclick="doLogout()">Sair</button>
+    </div>
+  </header>
+
+  <!-- PAGES WRAPPER -->
+  <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+
+  <!-- ======== DASHBOARD ======== -->
+  <div class="page on content" id="pg-dash">
+    <div class="ph"><div class="ph-row"><div><h1>Dashboard</h1><p id="dashSub">Carregando dados...</p></div><div class="flex ic gap-8"><button class="btn btn-s btn-sm" onclick="loadDash()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div></div>
+    <div class="stats-row">
+      <div class="stat c-teal"><div class="stat-lb">Hoje</div><div class="stat-val" id="d-hoje">—</div><div class="stat-sub">Atendimentos do dia</div></div>
+      <div class="stat c-blue"><div class="stat-lb">Agendados</div><div class="stat-val" id="d-agend">—</div><div class="stat-sub">Pendentes de realizacao</div></div>
+      <div class="stat c-green"><div class="stat-lb">Confirmados</div><div class="stat-val" id="d-conf">—</div><div class="stat-sub">Confirmaram presenca</div></div>
+      <div class="stat c-yellow"><div class="stat-lb">Realizados</div><div class="stat-val" id="d-real">—</div><div class="stat-sub">Consultas concluidas</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Funil — Ultimos 30 dias</div></div><button class="btn btn-g btn-sm" onclick="loadFunil()">Carregar</button></div>
+        <div class="card-body" id="funilBody"><div class="loading"><div class="spin"></div>Aguardando...</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Atividade Recente</div><button class="btn btn-g btn-sm" onclick="loadAtividade()">Carregar</button></div>
+        <div class="card-body" id="atividadeBody"><div class="loading"><div class="spin"></div>Aguardando...</div></div>
+      </div>
+    </div>
+    <div class="g2 mt-12" id="dashBottom"></div>
+  </div>
+
+  <!-- ======== LEADS ======== -->
+  <div class="page content" id="pg-leads">
+    <div class="ph"><div class="ph-row"><div><h1>Leads</h1><p>Contatos captados pelo bot — retencao de 45 dias</p></div><div class="flex ic gap-8"><select class="finp" style="width:auto;height:28px;font-size:11px;" id="filtroEsp" onchange="loadLeads()"><option value="">Todas as especialidades</option></select><select class="finp" style="width:auto;height:28px;font-size:11px;" id="filtroStatus" onchange="loadLeads()"><option value="">Todos os status</option><option value="agendado">Agendado</option><option value="compativel">Compativel</option><option value="aguardando">Aguardando</option><option value="encaminhado">Encaminhado</option></select><button class="btn btn-p btn-sm" onclick="loadLeads()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div></div>
+    <div class="stats-row" style="grid-template-columns:repeat(4,1fr);" id="leadsStats"><div class="loading"><div class="spin"></div></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">Todos os Leads</div></div><div class="tbl-wrap"><table><thead><tr><th>Paciente</th><th>Especialidade</th><th>Status</th><th>LGPD</th><th>Telefone</th><th>Data</th><th></th></tr></thead><tbody id="leadsTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="leadsFt">—</span></div></div>
+  </div>
+
+  <!-- ======== AGENDAMENTOS ======== -->
+  <div class="page content" id="pg-agenda">
+    <div class="ph"><div class="ph-row"><div><h1>Agendamentos</h1><p>Consultas marcadas pelo bot e manualmente</p></div><div class="flex ic gap-8"><select class="finp" style="width:auto;height:28px;font-size:11px;" id="filtroAgStatus" onchange="loadAgenda()"><option value="">Todos os status</option><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="realizado">Realizado</option><option value="cancelado">Cancelado</option><option value="nao_compareceu">Nao compareceu</option></select><button class="btn btn-p btn-sm" onclick="loadAgenda()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div></div>
+    <div class="stats-row" id="agendaStats"></div>
+    <div class="card"><div class="card-head"><div class="card-title">Consultas</div></div><div class="tbl-wrap"><table><thead><tr><th>Paciente</th><th>Data / Hora</th><th>Profissional</th><th>Tipo</th><th>Valor</th><th>Status</th><th>Lembrete</th><th>Confirmacao</th></tr></thead><tbody id="agendaTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="agendaFt">—</span></div></div>
+  </div>
+
+  <!-- ======== LEMBRETES ======== -->
+  <div class="page content" id="pg-lembretes">
+    <div class="ph"><div class="ph-row"><div><h1>Lembretes 24h</h1><p>Historico de lembretes enviados automaticamente pelo bot</p></div><button class="btn btn-p btn-sm" onclick="loadLembretes()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div>
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr);" id="lembStatsRow"></div>
+    <div class="card"><div class="card-head"><div class="card-title">Lembretes Enviados</div><div class="card-sub">Somente consultas com lembrete_24h_enviado = true</div></div><div class="tbl-wrap"><table><thead><tr><th>Paciente</th><th>Consulta Agendada</th><th>Profissional</th><th>Lembrete Enviado Em</th><th>Confirmacao Recebida</th></tr></thead><tbody id="lembTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="lembFt">—</span></div></div>
+    <div class="alert alert-teal mt-12"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Lembretes sao enviados automaticamente pelo n8n 24h antes da consulta. Disponivel nos planos Plus e Pro.</span></div>
+  </div>
+
+  <!-- ======== CONFIRMACOES ======== -->
+  <div class="page content" id="pg-confirmacoes">
+    <div class="ph"><div class="ph-row"><div><h1>Confirmacoes</h1><p>Pacientes que responderam ao lembrete 24h</p></div><button class="btn btn-p btn-sm" onclick="loadConfirmacoes()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div>
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr);" id="confStats"></div>
+    <div class="card"><div class="card-head"><div class="card-title">Respostas ao Lembrete</div></div><div class="tbl-wrap"><table><thead><tr><th>Paciente</th><th>Consulta</th><th>Profissional</th><th>Lembrete Enviado</th><th>Confirmacao</th><th>Status Atual</th></tr></thead><tbody id="confTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="confFt">—</span></div></div>
+  </div>
+
+  <!-- ======== PACIENTES ======== -->
+  <div class="page content" id="pg-pacientes">
+    <div class="ph"><div class="ph-row"><div><h1>Pacientes</h1><p>Cadastro permanente — pacientes que ja passaram pela clinica</p></div><div class="flex ic gap-8"><input type="text" class="finp" style="width:200px;" placeholder="Buscar por nome..." id="buscaPac" oninput="filtrarPacientes()"><button class="btn btn-p btn-sm" onclick="loadPacientes()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">Todos os Pacientes</div></div><div class="tbl-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>Email</th><th>Profissional</th><th>Convenio</th><th>Criado em</th><th></th></tr></thead><tbody id="pacTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="pacFt">—</span></div></div>
+  </div>
+
+  <!-- ======== PRONTUARIOS ======== -->
+  <div class="page content" id="pg-prontuario">
+    <div class="ph"><div class="ph-row"><div><h1>Prontuarios</h1><p>Historico clinico dos pacientes</p></div><button class="btn btn-p btn-sm" onclick="loadProntuarios()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div>
+    <div class="g2" style="height:calc(100vh - 180px);">
+      <div class="card" style="overflow-y:auto;"><div class="card-head"><div class="card-title">Pacientes</div></div><div id="prontuarioLista"></div></div>
+      <div class="card" style="overflow-y:auto;" id="prontuarioDetalhe"><div class="empty"><div class="empty-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h4>Selecione um paciente</h4><p>Clique em um paciente para ver o historico de prontuarios.</p></div></div>
+    </div>
+  </div>
+
+  <!-- ======== PRESCRICOES ======== -->
+  <div class="page content" id="pg-prescricao">
+    <div class="ph"><div class="ph-row"><div><h1>Prescricoes</h1><p>Receitas e documentos emitidos</p></div><button class="btn btn-p btn-sm" onclick="loadPrescricoes()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div>
+    <div class="g2">
+      <div class="card"><div class="card-head"><div class="card-title">Nova Prescricao</div></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="cfg-grid">
+            <div class="fg"><label>Paciente</label><input type="text" class="finp" id="prescPac" placeholder="Nome do paciente"></div>
+            <div class="fg"><label>Profissional</label><select class="finp" id="prescProf"><option value="">Selecione...</option></select></div>
+            <div class="fg cfg-full"><label>Medicamentos / Orientacoes</label><textarea class="finp-area" id="prescConteudo" placeholder="Descreva os medicamentos, doses e instrucoes..."></textarea></div>
+            <div class="fg cfg-full"><label>Observacoes</label><textarea class="finp-area" id="prescObs" placeholder="Observacoes adicionais..." style="min-height:50px;"></textarea></div>
+          </div>
+          <div class="flex ic jb mt-4">
+            <button class="btn btn-s btn-sm" onclick="salvarPrescricao()">Salvar rascunho</button>
+            <button class="btn btn-p" onclick="salvarPrescricao()">Gerar PDF</button>
+          </div>
+        </div>
+      </div>
+      <div class="card"><div class="card-head"><div class="card-title">Prescricoes Recentes</div></div><div class="tbl-wrap"><table><thead><tr><th>Paciente</th><th>Profissional</th><th>Data</th><th>Status</th><th></th></tr></thead><tbody id="prescTb"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- ======== PROFISSIONAIS ======== -->
+  <div class="page content" id="pg-profissionais">
+    <div class="ph"><div class="ph-row"><div><h1>Profissionais</h1><p>Equipe da clinica cadastrada no sistema</p></div><button class="btn btn-p btn-sm" onclick="showModalProf()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Novo profissional</button></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">Profissionais Ativos</div></div><div class="tbl-wrap"><table><thead><tr><th>Nome</th><th>Especialidade</th><th>Registro</th><th>Telefone</th><th>% Repasse</th><th>Status</th><th></th></tr></thead><tbody id="profTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="profFt">—</span></div></div>
+    <div id="modalProf" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;">
+      <div class="card" style="width:460px;max-width:95vw;">
+        <div class="card-head"><div class="card-title">Novo Profissional</div><button class="ic-btn" onclick="closeModalProf()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="cfg-grid">
+            <div class="fg"><label>Nome completo</label><input type="text" class="finp" id="pNome"></div>
+            <div class="fg"><label>Especialidade</label><input type="text" class="finp" id="pEsp" placeholder="Ex: Psicologia, Cardiologia..."></div>
+            <div class="fg"><label>CRM / CRO / CRP</label><input type="text" class="finp" id="pReg"></div>
+            <div class="fg"><label>Telefone</label><input type="text" class="finp" id="pTel"></div>
+            <div class="fg"><label>Email</label><input type="email" class="finp" id="pEmail"></div>
+            <div class="fg"><label>% de Repasse</label><input type="number" class="finp" id="pRepasse" placeholder="Ex: 60"></div>
+          </div>
+          <div class="flex ic gap-8 mt-4" style="justify-content:flex-end;">
+            <button class="btn btn-s" onclick="closeModalProf()">Cancelar</button>
+            <button class="btn btn-p" onclick="salvarProf()">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== FINANCEIRO ======== -->
+  <div class="page content" id="pg-financeiro">
+    <div class="ph"><div class="ph-row"><div><h1>Financeiro</h1><p>Receitas, pagamentos e repasses</p></div><button class="btn btn-p btn-sm" onclick="loadFinanceiro()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div>
+    <div class="stats-row" id="finStats"></div>
+    <div class="g2">
+      <div class="card"><div class="card-head"><div class="card-title">Receitas por Mes</div></div><div id="finMensalBody" class="card-body"><div class="loading"><div class="spin"></div>Carregando...</div></div></div>
+      <div class="card"><div class="card-head"><div class="card-title">Repasses por Profissional</div></div><div class="tbl-wrap"><table><thead><tr><th>Profissional</th><th>Consultas</th><th>Valor Bruto</th><th>% Repasse</th><th>Valor Repasse</th><th>Status</th></tr></thead><tbody id="repasseTb"></tbody></table></div></div>
+    </div>
+    <div class="card mt-12"><div class="card-head"><div class="card-title">Pagamentos Asaas</div></div><div class="tbl-wrap"><table><thead><tr><th>Referencia</th><th>Tipo</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody id="pagTb"></tbody></table></div></div>
+  </div>
+
+  <!-- ======== CAMPANHAS ======== -->
+  <div class="page content" id="pg-campanhas">
+    <div class="ph"><div class="ph-row"><div><h1>Campanhas de E-mail</h1><p>Disparo em massa para pacientes com consentimento — Plano Pro</p></div><button class="btn btn-p btn-sm" onclick="loadCampanhas()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-8.36"/></svg>Atualizar</button></div></div>
+    <div id="campanhaLock" class="alert alert-yellow mb-12" style="display:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Campanhas de e-mail estao disponiveis apenas no plano <strong>Pro</strong>. Fale com o suporte para fazer upgrade.</span></div>
+    <div class="g2">
+      <div class="card"><div class="card-head"><div class="card-title">Nova Campanha</div></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="fg"><label>Nome da campanha</label><input type="text" class="finp" id="campNome"></div>
+          <div class="fg"><label>Assunto do e-mail</label><input type="text" class="finp" id="campAssunto"></div>
+          <div class="fg"><label>Publico-alvo</label>
+            <select class="finp" id="campPublico">
+              <option value="todos">Todos os pacientes (email aceito)</option>
+            </select>
+          </div>
+          <div class="fg"><label>Conteudo HTML</label><textarea class="finp-area" id="campHTML" placeholder="&lt;p&gt;Ola {{nome}}, ...&lt;/p&gt;" style="min-height:100px;"></textarea></div>
+          <div class="flex ic gap-8 mt-4" style="justify-content:flex-end;">
+            <button class="btn btn-s" onclick="salvarCampanha('rascunho')">Salvar rascunho</button>
+            <button class="btn btn-p" onclick="salvarCampanha('enviando')">Disparar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card"><div class="card-head"><div class="card-title">Campanhas Anteriores</div></div><div class="tbl-wrap"><table><thead><tr><th>Nome</th><th>Enviados</th><th>Abertos</th><th>Status</th><th>Data</th></tr></thead><tbody id="campTb"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <!-- ======== RELATORIOS ======== -->
+  <div class="page content" id="pg-relatorios">
+    <div class="ph"><div class="ph-row"><div><h1>Relatorios</h1><p>Performance consolidada do sistema</p></div><div class="flex ic gap-8"><select class="finp" style="width:auto;height:28px;font-size:11px;" id="relPeriodo" onchange="loadRelatorios()"><option value="30">Ultimos 30 dias</option><option value="7">Ultimos 7 dias</option><option value="90">Ultimos 90 dias</option></select><button class="btn btn-p btn-sm" onclick="loadRelatorios()">Gerar</button></div></div></div>
+    <div class="stats-row" id="relStats"></div>
+    <div class="g2 mt-12">
+      <div class="card"><div class="card-head"><div class="card-title">Performance do Bot</div></div><div id="relBotBody" class="card-body"><div class="loading"><div class="spin"></div>Carregando...</div></div></div>
+      <div class="card"><div class="card-head"><div class="card-title">Distribuicao por Especialidade</div></div><div id="relEspBody" class="card-body"><div class="loading"><div class="spin"></div>Carregando...</div></div></div>
+    </div>
+    <div class="card mt-12"><div class="card-head"><div class="card-title">Log de Automacoes (n8n)</div></div><div class="tbl-wrap"><table><thead><tr><th>Tipo</th><th>Status</th><th>Paciente / Lead</th><th>Mensagem</th><th>Data</th></tr></thead><tbody id="logTb"></tbody></table></div><div class="card-foot"><span class="txs tc3" id="logFt">—</span></div></div>
+  </div>
+
+  <!-- ======== CONFIG BOT ======== -->
+  <div class="page content" id="pg-config-bot">
+    <div class="ph"><h1>Configuracao do Bot</h1><p>Especialidades, perguntas de triagem, regras de urgencia e mensagens</p></div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <!-- Bot geral -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">Bot — Configuracoes Gerais</div><button class="btn btn-p btn-sm" onclick="saveBotConfig()">Salvar</button></div>
+        <div class="card-body">
+          <div class="cfg-grid">
+            <div class="fg"><label>Nome do Bot</label><input type="text" class="finp" id="botNome" placeholder="Ex: Sofia, Clara, Atendimento..."></div>
+            <div class="fg"><label>Saudacao Inicial</label><input type="text" class="finp" id="botSaudacao" placeholder="Ex: Ola! Bem-vindo ao atendimento..."></div>
+            <div class="fg"><label>Horario Inicio (hora)</label><input type="number" class="finp" id="botHrInicio" min="0" max="23" placeholder="8"></div>
+            <div class="fg"><label>Horario Fim (hora)</label><input type="number" class="finp" id="botHrFim" min="0" max="23" placeholder="18"></div>
+            <div class="fg"><label>Dias Ativos</label><select class="finp" id="botDias"><option value="seg-sex">Segunda a Sexta</option><option value="seg-sab">Segunda a Sabado</option><option value="todos">Todos os dias</option></select></div>
+            <div class="fg"><label>Msg Fora do Horario</label><input type="text" class="finp" id="botMsgFora" placeholder="Atendemos de seg a sex..."></div>
+            <div class="fg"><label>Msg LGPD</label><input type="text" class="finp" id="botMsgLgpd" placeholder="Seus dados serao..."></div>
+            <div class="fg"><label>Msg Perfil Viavel</label><input type="text" class="finp" id="botMsgViavel" placeholder="Encontrei disponibilidade para voce..."></div>
+            <div class="fg"><label>Msg Inviavel</label><input type="text" class="finp" id="botMsgInviavel" placeholder="Com base no que compartilhou..."></div>
+            <div class="fg"><label>Msg Agendado</label><input type="text" class="finp" id="botMsgAgendado" placeholder="Sessao confirmada! Voce recebera..."></div>
+          </div>
+          <div class="mt-12">
+            <div class="tog-row"><div class="tog-info"><h4>Bot ativo</h4><p>Liga/desliga o atendimento automatico via WhatsApp</p></div><label class="tog"><input type="checkbox" id="togBotAtivo"><div class="tog-sl"></div></label></div>
+            <div class="tog-row"><div class="tog-info"><h4>Mostrar docs da especialidade</h4><p>Envia orientacoes ao paciente apos o agendamento</p></div><label class="tog"><input type="checkbox" id="togMostrarDocs"><div class="tog-sl"></div></label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Especialidades -->
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Especialidades Atendidas</div><div class="card-sub">O paciente vai escolher uma das opcoes abaixo no bot</div></div><button class="btn btn-p btn-sm" onclick="addEspecialidade()">+ Adicionar</button></div>
+        <div id="espList" class="card-body"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+      </div>
+
+      <!-- Perguntas por especialidade -->
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Perguntas de Triagem</div><div class="card-sub">Perguntas que o bot faz ao paciente apos ele escolher a especialidade</div></div>
+          <div class="flex ic gap-8"><select class="finp" style="width:auto;height:28px;font-size:11px;" id="filtroEspPerguntas" onchange="loadPerguntas()"><option value="">Selecione a especialidade</option></select><button class="btn btn-p btn-sm" onclick="addPergunta()">+ Pergunta</button></div>
+        </div>
+        <div id="perguntasList" class="card-body"><div class="loading"><div class="spin"></div>Selecione uma especialidade acima.</div></div>
+      </div>
+
+      <!-- Docs por especialidade -->
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Documentos / Orientacoes por Especialidade</div><div class="card-sub">Enviados ao paciente apos o agendamento (se mostrar_docs = ativo)</div></div><button class="btn btn-p btn-sm" onclick="addDoc()">+ Adicionar</button></div>
+        <div id="docsList" class="card-body"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== CONFIGURACOES ======== -->
+  <div class="page content" id="pg-config">
+    <div class="ph"><h1>Configuracoes da Clinica</h1><p>Dados cadastrais, WhatsApp e preferencias</p></div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Dados da Clinica</div><button class="btn btn-p btn-sm" onclick="saveClinica()">Salvar alteracoes</button></div>
+        <div class="card-body">
+          <div class="cfg-grid">
+            <div class="fg"><label>Nome da Clinica</label><input type="text" class="finp" id="cfgNome"></div>
+            <div class="fg"><label>Nome do Responsavel</label><input type="text" class="finp" id="cfgResp"></div>
+            <div class="fg"><label>CNPJ / CPF</label><input type="text" class="finp" id="cfgDoc"></div>
+            <div class="fg"><label>Telefone</label><input type="text" class="finp" id="cfgTel"></div>
+            <div class="fg"><label>Endereco</label><input type="text" class="finp" id="cfgEnd"></div>
+            <div class="fg"><label>Cidade</label><input type="text" class="finp" id="cfgCidade"></div>
+            <div class="fg"><label>Estado</label><input type="text" class="finp" id="cfgEstado"></div>
+            <div class="fg"><label>CEP</label><input type="text" class="finp" id="cfgCep"></div>
+            <div class="fg"><label>Site</label><input type="text" class="finp" id="cfgSite"></div>
+            <div class="fg"><label>% Repasse Padrao</label><input type="number" class="finp" id="cfgRepasse" placeholder="Ex: 60"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">Nova Senha</div><button class="btn btn-p btn-sm" onclick="saveSenha()">Alterar senha</button></div>
+        <div class="card-body"><div class="cfg-grid">
+          <div class="fg"><label>Nova Senha</label><input type="password" class="finp" id="cfgSenha1"></div>
+          <div class="fg"><label>Confirmar Nova Senha</label><input type="password" class="finp" id="cfgSenha2"></div>
+        </div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Conexao WhatsApp</div></div><span class="badge b-gray" id="waStatusBadge">Verificando...</span></div>
+        <div class="card-body">
+          <div class="cfg-grid">
+            <div class="fg"><label>URL da Evolution API</label><input type="text" class="finp" id="cfgEvoUrl" placeholder="https://evolution.seudominio.com"></div>
+            <div class="fg"><label>Chave da Evolution API</label><input type="text" class="finp" id="cfgEvoKey" placeholder="sua-chave-aqui"></div>
+            <div class="fg"><label>Nome da Instancia</label><input type="text" class="finp" id="cfgInstancia" placeholder="nome-da-instancia"></div>
+            <div class="fg" style="align-self:end;"><button class="btn btn-p" onclick="testarWA()">Testar conexao</button></div>
+          </div>
+          <button class="btn btn-g btn-sm mt-12" onclick="saveEvolution()">Salvar configuracoes WhatsApp</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Horarios de Atendimento</div><div class="card-sub">Horarios disponiveis para agendamento</div></div><button class="btn btn-p btn-sm" onclick="loadHorarios()">Atualizar</button></div>
+        <div id="horariosBody" class="card-body"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /pages wrapper -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+/* =============================================
+   MEDATEND — Sistema Real com Supabase
+   ============================================= */
+const SB  = 'SUA_URL_SUPABASE'; // ex: https://xxxx.supabase.co
+const SK  = 'SUA_SERVICE_ROLE_KEY';
+const H   = { 'apikey': SK, 'Authorization': 'Bearer ' + SK, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+
+let U = null; // usuario logado
+
+/* ── API Helper ── */
+async function api(path, opts = {}) {
+  try {
+    const r = await fetch(SB + '/rest/v1/' + path, { headers: H, ...opts });
+    if (!r.ok) { const e = await r.text(); console.error('API error:', e); return null; }
+    if (r.status === 204) return [];
+    return r.json();
+  } catch(e) { console.error('Fetch error:', e); return null; }
+}
+
+async function rpc(fn, body = {}) {
+  try {
+    const r = await fetch(SB + '/rest/v1/rpc/' + fn, { method:'POST', headers: H, body: JSON.stringify(body) });
+    return r.json();
+  } catch(e) { return null; }
+}
+
+/* ── Formatters ── */
+const fmtDt = s => s ? new Date(s).toLocaleString('pt-BR', { dateStyle:'short', timeStyle:'short' }) : '—';
+const fmtD  = s => s ? new Date(s).toLocaleDateString('pt-BR') : '—';
+const fmtR  = v => v != null ? 'R$ ' + Number(v).toFixed(2).replace('.', ',') : '—';
+const iniStr = s => (s||'--').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
+const STATUS_BADGE = {
+  agendado:    '<span class="badge b-blue">Agendado</span>',
+  confirmado:  '<span class="badge b-green">Confirmado</span>',
+  realizado:   '<span class="badge b-teal">Realizado</span>',
+  cancelado:   '<span class="badge b-red">Cancelado</span>',
+  nao_compareceu: '<span class="badge b-yellow">Nao compareceu</span>',
+  compativel:  '<span class="badge b-teal">Compativel</span>',
+  encaminhado: '<span class="badge b-yellow">Encaminhado</span>',
+  aguardando:  '<span class="badge b-gray">Aguardando</span>',
+  ativo:       '<span class="badge b-green">Ativo</span>',
+  inativo:     '<span class="badge b-gray">Inativo</span>',
+  pago:        '<span class="badge b-green">Pago</span>',
+  pendente:    '<span class="badge b-yellow">Pendente</span>',
+  vencido:     '<span class="badge b-red">Vencido</span>',
+};
+const sb = s => STATUS_BADGE[s] || `<span class="badge b-gray">${s||'—'}</span>`;
+
+function emptyState(msg, sub) {
+  return `<div class="empty"><div class="empty-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><h4>${msg}</h4><p>${sub}</p></div>`;
+}
+
+/* ── Navigation ── */
+const PAGE_TITLES = {
+  dash:'Dashboard', leads:'Leads', agenda:'Agendamentos',
+  lembretes:'Lembretes 24h', confirmacoes:'Confirmacoes',
+  pacientes:'Pacientes', prontuario:'Prontuarios', prescricao:'Prescricoes',
+  profissionais:'Profissionais', financeiro:'Financeiro', campanhas:'Campanhas',
+  relatorios:'Relatorios', 'config-bot':'Config. Bot', config:'Configuracoes'
+};
+
+function nav(id, btn) {
+  closeSb();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.s-item').forEach(b => b.classList.remove('on'));
+  const pg = document.getElementById('pg-' + id);
+  if (pg) pg.classList.add('on');
+  if (btn) btn.classList.add('on');
+  document.getElementById('topTitle').textContent = PAGE_TITLES[id] || id;
+  // Load data for page
+  const loaders = {
+    dash: loadDash, leads: loadLeads, agenda: loadAgenda,
+    lembretes: loadLembretes, confirmacoes: loadConfirmacoes,
+    pacientes: loadPacientes, prontuario: loadProntuarios,
+    prescricao: loadPrescricoes, profissionais: loadProfissionais,
+    financeiro: loadFinanceiro, campanhas: loadCampanhas,
+    relatorios: loadRelatorios, 'config-bot': loadConfigBot,
+    config: loadConfig
+  };
+  if (loaders[id]) loaders[id]();
+}
+
+function openSb() { document.getElementById('sidebar').classList.add('open'); document.getElementById('sbOverlay').classList.add('on'); }
+function closeSb() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('on'); }
+function doLogout() { sessionStorage.removeItem('ma_u'); window.location.href = 'medatend_login.html'; }
+
+/* ── DASHBOARD ── */
+async function loadDash() {
+  document.getElementById('dashSub').textContent = 'Atualizando...';
+  // View do dia
+  const dia = await api(`receptivo_dashboard_dia?cliente_id=eq.${U.id}`);
+  if (dia && dia.length) {
+    const d = dia[0];
+    document.getElementById('d-hoje').textContent  = d.total_hoje  ?? 0;
+    document.getElementById('d-agend').textContent = d.agendados   ?? 0;
+    document.getElementById('d-conf').textContent  = d.confirmados ?? 0;
+    document.getElementById('d-real').textContent  = d.realizados  ?? 0;
+    document.getElementById('dashSub').textContent = 'Dados de hoje em tempo real via Supabase';
+  } else {
+    ['d-hoje','d-agend','d-conf','d-real'].forEach(id => document.getElementById(id).textContent = '0');
+    document.getElementById('dashSub').textContent = 'Nenhum dado de hoje ainda';
+  }
+  loadFunil();
+  loadAtividade();
+}
+
+async function loadFunil() {
+  const el = document.getElementById('funilBody');
+  el.innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  const data = await api(`receptivo_leads_v1?cliente_id=eq.${U.id}&created_at=gte.${thirtyDaysAgo()}&select=status,lgpd_aceito`);
+  if (!data || !data.length) { el.innerHTML = emptyState('Sem dados', 'Nenhum lead nos ultimos 30 dias.'); return; }
+  const total     = data.length;
+  const lgpd      = data.filter(x => x.lgpd_aceito).length;
+  const qualif    = data.filter(x => ['compativel','agendado','realizado'].includes(x.status)).length;
+  const compat    = data.filter(x => ['agendado','realizado'].includes(x.status)).length;
+  const agend     = data.filter(x => x.status === 'realizado').length;
+  const rows = [
+    { lb:'Iniciaram triagem', val:total, pct:100 },
+    { lb:'LGPD aceito',       val:lgpd,  pct:total ? Math.round(lgpd/total*100) : 0 },
+    { lb:'Qualificados',      val:qualif,pct:total ? Math.round(qualif/total*100) : 0 },
+    { lb:'Perfil compativel', val:compat,pct:total ? Math.round(compat/total*100) : 0 },
+    { lb:'Realizados',        val:agend, pct:total ? Math.round(agend/total*100) : 0 },
+  ];
+  el.innerHTML = rows.map(r => `<div class="fn-item"><span class="fn-lb">${r.lb}</span><div class="fn-bar"><div class="fn-fill" style="width:${r.pct}%"></div></div><span class="fn-val">${r.val}</span><span class="fn-pct">${r.pct}%</span></div>`).join('');
+}
+
+async function loadAtividade() {
+  const el = document.getElementById('atividadeBody');
+  el.innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  const logs = await api(`receptivo_log_automacoes_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=8&select=tipo_automacao,status,descricao,created_at`);
+  if (!logs || !logs.length) { el.innerHTML = emptyState('Sem atividade', 'Nenhuma automacao registrada ainda.'); return; }
+  const dotClass = { sucesso:'teal', erro:'red', info:'blue', alerta:'yellow' };
+  el.innerHTML = '<div class="timeline">' + logs.map(l => `<div class="tl-item"><div class="tl-dot ${dotClass[l.status]||'gray'}">${l.status === 'sucesso' ? '✓' : l.status === 'erro' ? '!' : '•'}</div><div><div class="tl-title">${l.tipo_automacao||'Automacao'}</div><div class="tl-sub">${l.descricao||''}</div><div class="tl-time">${fmtDt(l.created_at)}</div></div></div>`).join('') + '</div>';
+}
+
+/* ── LEADS ── */
+let _leadsData = [];
+async function loadLeads() {
+  document.getElementById('leadsTb').innerHTML = '<tr><td colspan="7"><div class="loading"><div class="spin"></div>Carregando...</div></td></tr>';
+  const esp = document.getElementById('filtroEsp').value;
+  const sts = document.getElementById('filtroStatus').value;
+  let q = `receptivo_leads_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=100&select=*,especialidade:especialidade_id(nome)`;
+  if (sts) q += `&status=eq.${sts}`;
+  const data = await api(q);
+  _leadsData = data || [];
+  // Stats
+  const total  = _leadsData.length;
+  const agend  = _leadsData.filter(x=>x.status==='agendado').length;
+  const compat = _leadsData.filter(x=>x.status==='compativel').length;
+  const pend   = _leadsData.filter(x=>x.status==='aguardando').length;
+  document.getElementById('leadsStats').innerHTML = `
+    <div class="stat c-teal"><div class="stat-lb">Total</div><div class="stat-val">${total}</div><div class="stat-sub">Ultimos 100 registros</div></div>
+    <div class="stat c-green"><div class="stat-lb">Agendados</div><div class="stat-val">${agend}</div></div>
+    <div class="stat c-blue"><div class="stat-lb">Compativeis</div><div class="stat-val">${compat}</div></div>
+    <div class="stat c-yellow"><div class="stat-lb">Aguardando</div><div class="stat-val">${pend}</div></div>`;
+  document.getElementById('bdgLeads').textContent = total;
+  // Filter by especialidade if needed
+  const filtered = esp ? _leadsData.filter(x => (x.especialidade?.nome||'') === esp) : _leadsData;
+  renderLeadsTable(filtered);
+  document.getElementById('leadsFt').textContent = `${filtered.length} leads exibidos`;
+  // Populate esp filter
+  const esps = [...new Set(_leadsData.map(x=>x.especialidade?.nome).filter(Boolean))];
+  const sel = document.getElementById('filtroEsp');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Todas as especialidades</option>' + esps.map(e=>`<option value="${e}"${e===cur?' selected':''}>${e}</option>`).join('');
+}
+
+function renderLeadsTable(data) {
+  document.getElementById('leadsTb').innerHTML = !data.length
+    ? '<tr><td colspan="7">' + emptyState('Nenhum lead encontrado','Ainda nao ha leads captados pelo bot.') + '</td></tr>'
+    : data.map(l => `<tr>
+      <td><div class="av-row"><div class="av">${iniStr(l.nome_paciente)}</div><span class="fw7">${l.nome_paciente||'—'}</span></div></td>
+      <td class="txs tc3">${l.especialidade?.nome||'—'}</td>
+      <td>${sb(l.status)}</td>
+      <td>${l.lgpd_aceito ? '<span class="badge b-green">OK</span>' : '<span class="badge b-yellow">Pendente</span>'}</td>
+      <td class="txs tc3">${l.telefone||'—'}</td>
+      <td class="txs tc3">${fmtDt(l.created_at)}</td>
+      <td><button class="btn btn-g btn-sm" onclick="verLead('${l.id}')">Ver</button></td>
+    </tr>`).join('');
+}
+
+function verLead(id) { alert('Detalhes do lead ID: ' + id + '\n\n(Implemente modal de detalhes aqui)'); }
+
+/* ── AGENDAMENTOS ── */
+async function loadAgenda() {
+  document.getElementById('agendaTb').innerHTML = '<tr><td colspan="8"><div class="loading"><div class="spin"></div>Carregando...</div></td></tr>';
+  const sts = document.getElementById('filtroAgStatus').value;
+  let q = `receptivo_agendamentos_v1?cliente_id=eq.${U.id}&order=data_hora.desc&limit=100&select=*,profissional:profissional_id(nome)`;
+  if (sts) q += `&status=eq.${sts}`;
+  const data = await api(q);
+  if (!data) { document.getElementById('agendaTb').innerHTML = '<tr><td colspan="8">' + emptyState('Erro ao carregar','Tente novamente.') + '</td></tr>'; return; }
+  const agend   = data.filter(x=>x.status==='agendado').length;
+  const conf    = data.filter(x=>x.status==='confirmado').length;
+  const real    = data.filter(x=>x.status==='realizado').length;
+  const cancel  = data.filter(x=>x.status==='cancelado').length;
+  document.getElementById('agendaStats').innerHTML = `
+    <div class="stat c-blue"><div class="stat-lb">Agendados</div><div class="stat-val">${agend}</div></div>
+    <div class="stat c-green"><div class="stat-lb">Confirmados</div><div class="stat-val">${conf}</div></div>
+    <div class="stat c-teal"><div class="stat-lb">Realizados</div><div class="stat-val">${real}</div></div>
+    <div class="stat c-red"><div class="stat-lb">Cancelados</div><div class="stat-val">${cancel}</div></div>`;
+  document.getElementById('agendaTb').innerHTML = !data.length
+    ? '<tr><td colspan="8">' + emptyState('Nenhum agendamento','O bot ainda nao realizou agendamentos.') + '</td></tr>'
+    : data.map(a => `<tr>
+      <td><div class="av-row"><div class="av">${iniStr(a.nome_paciente)}</div><span class="fw7">${a.nome_paciente||'—'}</span></div></td>
+      <td class="txs tc3">${fmtDt(a.data_hora)}</td>
+      <td class="txs tc3">${a.profissional?.nome||'—'}</td>
+      <td class="txs tc3">${a.tipo_consulta||'—'}</td>
+      <td class="txs">${fmtR(a.valor_consulta)}</td>
+      <td>${sb(a.status)}</td>
+      <td>${a.lembrete_24h_enviado ? '<span class="badge b-green">Enviado</span>' : '<span class="badge b-gray">Pendente</span>'}</td>
+      <td>${a.confirmacao_recebida ? '<span class="badge b-green">Confirmado</span>' : '<span class="badge b-gray">Aguardando</span>'}</td>
+    </tr>`).join('');
+  document.getElementById('agendaFt').textContent = `${data.length} agendamentos exibidos`;
+}
+
+/* ── LEMBRETES ── */
+async function loadLembretes() {
+  document.getElementById('lembTb').innerHTML = '<tr><td colspan="5"><div class="loading"><div class="spin"></div>Carregando...</div></td></tr>';
+  const data = await api(`receptivo_agendamentos_v1?cliente_id=eq.${U.id}&lembrete_24h_enviado=eq.true&order=lembrete_enviado_em.desc&limit=100&select=*,profissional:profissional_id(nome)`);
+  if (!data) return;
+  const total     = data.length;
+  const confirmou = data.filter(x=>x.confirmacao_recebida).length;
+  const tx        = total ? Math.round(confirmou/total*100) : 0;
+  document.getElementById('lembStatsRow').innerHTML = `
+    <div class="stat c-teal"><div class="stat-lb">Lembretes Enviados</div><div class="stat-val">${total}</div></div>
+    <div class="stat c-green"><div class="stat-lb">Confirmaram</div><div class="stat-val">${confirmou}</div></div>
+    <div class="stat c-blue"><div class="stat-lb">Taxa Confirmacao</div><div class="stat-val">${tx}%</div></div>`;
+  document.getElementById('bdgLemb').textContent = data.filter(x => !x.confirmacao_recebida).length;
+  document.getElementById('lembTb').innerHTML = !data.length
+    ? '<tr><td colspan="5">' + emptyState('Nenhum lembrete enviado','Quando o bot enviar lembretes 24h, eles aparecerao aqui.') + '</td></tr>'
+    : data.map(a => `<tr>
+      <td><div class="av-row"><div class="av">${iniStr(a.nome_paciente)}</div><span class="fw7">${a.nome_paciente||'—'}</span></div></td>
+      <td class="txs tc3">${fmtDt(a.data_hora)}</td>
+      <td class="txs tc3">${a.profissional?.nome||'—'}</td>
+      <td class="txs tc3">${fmtDt(a.lembrete_enviado_em)}</td>
+      <td>${a.confirmacao_recebida ? '<span class="badge b-green">Confirmado</span>' : '<span class="badge b-gray">Aguardando resposta</span>'}</td>
+    </tr>`).join('');
+  document.getElementById('lembFt').textContent = `${data.length} lembretes exibidos`;
+}
+
+/* ── CONFIRMACOES ── */
+async function loadConfirmacoes() {
+  const data = await api(`receptivo_agendamentos_v1?cliente_id=eq.${U.id}&lembrete_24h_enviado=eq.true&order=data_hora.asc&limit=100&select=*,profissional:profissional_id(nome)`);
+  if (!data) return;
+  const lembrados = data.length;
+  const conf      = data.filter(x=>x.confirmacao_recebida).length;
+  const semResp   = lembrados - conf;
+  document.getElementById('confStats').innerHTML = `
+    <div class="stat c-teal"><div class="stat-lb">Com lembrete</div><div class="stat-val">${lembrados}</div></div>
+    <div class="stat c-green"><div class="stat-lb">Confirmaram</div><div class="stat-val">${conf}</div></div>
+    <div class="stat c-yellow"><div class="stat-lb">Sem resposta</div><div class="stat-val">${semResp}</div></div>`;
+  document.getElementById('confTb').innerHTML = !data.length
+    ? '<tr><td colspan="6">' + emptyState('Sem confirmacoes','Nenhum paciente com lembrete enviado.') + '</td></tr>'
+    : data.map(a => `<tr>
+      <td><div class="av-row"><div class="av">${iniStr(a.nome_paciente)}</div><span class="fw7">${a.nome_paciente||'—'}</span></div></td>
+      <td class="txs tc3">${fmtDt(a.data_hora)}</td>
+      <td class="txs tc3">${a.profissional?.nome||'—'}</td>
+      <td class="txs tc3">${fmtDt(a.lembrete_enviado_em)}</td>
+      <td>${a.confirmacao_recebida ? '<span class="badge b-green">Confirmou</span>' : '<span class="badge b-gray">Sem resposta</span>'}</td>
+      <td>${sb(a.status)}</td>
+    </tr>`).join('');
+  document.getElementById('confFt').textContent = `${data.length} registros`;
+}
+
+/* ── PACIENTES ── */
+let _pacsData = [];
+async function loadPacientes() {
+  document.getElementById('pacTb').innerHTML = '<tr><td colspan="7"><div class="loading"><div class="spin"></div>Carregando...</div></td></tr>';
+  const data = await api(`receptivo_pacientes_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=200&select=*,profissional:profissional_id(nome)`);
+  _pacsData = data || [];
+  renderPacientesTable(_pacsData);
+}
+function filtrarPacientes() {
+  const q = document.getElementById('buscaPac').value.toLowerCase();
+  renderPacientesTable(q ? _pacsData.filter(p=>(p.nome||'').toLowerCase().includes(q)) : _pacsData);
+}
+function renderPacientesTable(data) {
+  document.getElementById('pacTb').innerHTML = !data.length
+    ? '<tr><td colspan="7">' + emptyState('Nenhum paciente','Pacientes aparecem aqui apos a primeira consulta.') + '</td></tr>'
+    : data.map(p => `<tr>
+      <td><div class="av-row"><div class="av">${iniStr(p.nome)}</div><span class="fw7">${p.nome||'—'}</span></div></td>
+      <td class="txs tc3">${p.telefone||'—'}</td>
+      <td class="txs tc3">${p.email||'—'}</td>
+      <td class="txs tc3">${p.profissional?.nome||'—'}</td>
+      <td class="txs tc3">${p.convenio||'Particular'}</td>
+      <td class="txs tc3">${fmtD(p.created_at)}</td>
+      <td><button class="btn btn-g btn-sm" onclick="abrirProntuarioPac('${p.id}','${(p.nome||'').replace(/'/g,'&#39;')}')">Prontuario</button></td>
+    </tr>`).join('');
+  document.getElementById('pacFt').textContent = `${data.length} pacientes`;
+}
+
+/* ── PRONTUARIOS ── */
+let _pronts = [];
+async function loadProntuarios() {
+  const el = document.getElementById('prontuarioLista');
+  el.innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  const data = await api(`receptivo_prontuarios_v1?cliente_id=eq.${U.id}&order=created_at.desc&select=*,profissional:profissional_id(nome)`);
+  _pronts = data || [];
+  // Agrupa por nome_paciente
+  const byPac = {};
+  _pronts.forEach(p => { const k = p.nome_paciente||p.paciente_id||'Sem nome'; if (!byPac[k]) byPac[k] = []; byPac[k].push(p); });
+  const pacs = Object.keys(byPac);
+  if (!pacs.length) { el.innerHTML = emptyState('Sem prontuarios','Nenhum prontuario registrado ainda.'); return; }
+  el.innerHTML = pacs.map(nome => `<div class="pac-item" onclick="abrirProntuario('${nome.replace(/'/g,'&#39;')}')">
+    <div class="pac-av">${iniStr(nome)}</div>
+    <div style="flex:1;min-width:0;"><div class="fw7 tsm">${nome}</div><div class="txs tc3">${byPac[nome][0].profissional?.nome||'—'} · ${byPac[nome].length} registro(s)</div></div>
+    <span class="badge b-teal">${byPac[nome].length}</span>
+  </div>`).join('');
+}
+
+function abrirProntuario(nome) {
+  document.querySelectorAll('.pac-item').forEach(el => el.classList.remove('sel'));
+  const items = document.querySelectorAll('.pac-item');
+  items.forEach(el => { if (el.textContent.includes(nome)) el.classList.add('sel'); });
+  const registros = _pronts.filter(p => (p.nome_paciente||p.paciente_id||'Sem nome') === nome);
+  const det = document.getElementById('prontuarioDetalhe');
+  det.innerHTML = `<div class="card-head"><div><div class="card-title">${nome}</div><div class="card-sub">${registros.length} registro(s)</div></div><button class="btn btn-p btn-sm" onclick="novoRegistro('${nome.replace(/'/g,'&#39;')}')">+ Novo</button></div>`
+    + registros.map(r => `<div class="pront-entry">
+      <div class="pront-dt">${fmtDt(r.created_at)} — ${r.profissional?.nome||'—'}</div>
+      <div class="mb-8"><div class="pront-lb">Queixa Principal</div><div class="pront-vl">${r.queixa_principal||'—'}</div></div>
+      <div class="mb-8"><div class="pront-lb">Anamnese</div><div class="pront-vl">${r.anamnese||'—'}</div></div>
+      <div class="mb-8"><div class="pront-lb">Evolucao / Observacoes</div><div class="pront-vl">${r.observacoes||'—'}</div></div>
+      ${r.diagnostico ? `<div class="mb-8"><div class="pront-lb">Diagnostico</div><div class="pront-vl">${r.diagnostico}</div></div>` : ''}
+    </div>`).join('');
+}
+
+async function abrirProntuarioPac(pacId, nome) {
+  nav('prontuario', null);
+  await loadProntuarios();
+  setTimeout(() => abrirProntuario(nome), 500);
+}
+
+function novoRegistro(nome) { alert('Formulario de novo registro para: ' + nome + '\n\n(Implemente modal CRUD aqui)'); }
+
+/* ── PRESCRICOES ── */
+async function loadPrescricoes() {
+  // Carrega profissionais para o select
+  const profs = await api(`receptivo_profissionais_v1?cliente_id=eq.${U.id}&ativo=eq.true&select=id,nome`);
+  const sel = document.getElementById('prescProf');
+  sel.innerHTML = '<option value="">Selecione...</option>' + (profs||[]).map(p=>`<option value="${p.id}">${p.nome}</option>`).join('');
+  // Lista prescricoes
+  const data = await api(`receptivo_prescricoes_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=50&select=*,profissional:profissional_id(nome)`);
+  document.getElementById('prescTb').innerHTML = !data?.length
+    ? '<tr><td colspan="5">' + emptyState('Sem prescricoes','Nenhuma prescricao emitida ainda.') + '</td></tr>'
+    : (data||[]).map(p => `<tr>
+      <td class="fw7">${p.nome_paciente||'—'}</td>
+      <td class="txs tc3">${p.profissional?.nome||'—'}</td>
+      <td class="txs tc3">${fmtDt(p.created_at)}</td>
+      <td>${sb(p.status||'emitida')}</td>
+      <td><button class="btn btn-g btn-sm">PDF</button></td>
+    </tr>`).join('');
+}
+
+async function salvarPrescricao() {
+  const pac  = document.getElementById('prescPac').value.trim();
+  const prof = document.getElementById('prescProf').value;
+  const cont = document.getElementById('prescConteudo').value.trim();
+  if (!pac || !cont) { alert('Preencha ao menos o paciente e os medicamentos.'); return; }
+  const body = { cliente_id: U.id, profissional_id: prof||null, nome_paciente: pac, conteudo: cont, observacoes: document.getElementById('prescObs').value, status: 'emitida' };
+  const r = await api('receptivo_prescricoes_v1', { method:'POST', body: JSON.stringify(body) });
+  if (r) { alert('Prescricao salva com sucesso!'); loadPrescricoes(); } else alert('Erro ao salvar.');
+}
+
+/* ── PROFISSIONAIS ── */
+async function loadProfissionais() {
+  const data = await api(`receptivo_profissionais_v1?cliente_id=eq.${U.id}&order=nome.asc&select=*`);
+  document.getElementById('profTb').innerHTML = !data?.length
+    ? '<tr><td colspan="7">' + emptyState('Nenhum profissional','Adicione profissionais para comecar.') + '</td></tr>'
+    : (data||[]).map(p => `<tr>
+      <td><div class="av-row"><div class="av">${iniStr(p.nome)}</div><span class="fw7">${p.nome}</span></div></td>
+      <td class="txs tc3">${p.especialidade||'—'}</td>
+      <td class="txs tc3">${p.registro_profissional||'—'}</td>
+      <td class="txs tc3">${p.telefone||'—'}</td>
+      <td class="txs tc3">${p.percentual_repasse != null ? p.percentual_repasse + '%' : '—'}</td>
+      <td>${p.ativo ? '<span class="badge b-green">Ativo</span>' : '<span class="badge b-gray">Inativo</span>'}</td>
+      <td><button class="btn btn-g btn-sm" onclick="editProf('${p.id}')">Editar</button></td>
+    </tr>`).join('');
+  document.getElementById('profFt').textContent = `${data?.length||0} profissionais`;
+}
+
+function showModalProf() { document.getElementById('modalProf').style.display = 'flex'; }
+function closeModalProf() { document.getElementById('modalProf').style.display = 'none'; }
+async function salvarProf() {
+  const body = { cliente_id: U.id, nome: document.getElementById('pNome').value, especialidade: document.getElementById('pEsp').value, registro_profissional: document.getElementById('pReg').value, telefone: document.getElementById('pTel').value, email: document.getElementById('pEmail').value, percentual_repasse: Number(document.getElementById('pRepasse').value)||null, ativo: true };
+  if (!body.nome) { alert('Nome obrigatorio.'); return; }
+  const r = await api('receptivo_profissionais_v1', { method:'POST', body: JSON.stringify(body) });
+  if (r) { alert('Profissional salvo!'); closeModalProf(); loadProfissionais(); } else alert('Erro ao salvar.');
+}
+function editProf(id) { alert('Editar profissional ID: ' + id + '\n\n(Implemente modal de edicao aqui)'); }
+
+/* ── FINANCEIRO ── */
+async function loadFinanceiro() {
+  // Metricas
+  const met = await api(`receptivo_metricas_v1?cliente_id=eq.${U.id}&order=data_referencia.desc&limit=1&select=*`);
+  const m = met?.[0] || {};
+  document.getElementById('finStats').innerHTML = `
+    <div class="stat c-teal"><div class="stat-lb">Receita Bruta</div><div class="stat-val">${fmtR(m.receita_total)}</div><div class="stat-sub">Mes atual</div></div>
+    <div class="stat c-green"><div class="stat-lb">Total Repasses</div><div class="stat-val">${fmtR(m.total_repasses)}</div></div>
+    <div class="stat c-blue"><div class="stat-lb">Ticket Medio</div><div class="stat-val">${fmtR(m.ticket_medio)}</div></div>
+    <div class="stat c-yellow"><div class="stat-lb">Consultas</div><div class="stat-val">${m.total_agendamentos||0}</div></div>`;
+  // Financeiro mensal (view)
+  const mensal = await api(`receptivo_financeiro_mensal?cliente_id=eq.${U.id}&order=mes.desc&limit=6&select=*`);
+  const el = document.getElementById('finMensalBody');
+  el.innerHTML = !mensal?.length ? emptyState('Sem dados financeiros','Nenhuma consulta realizada ainda.') : mensal.map(m => `
+    <div class="area-row">
+      <div><div class="area-name tsm">${m.mes||'—'}</div><div class="txs tc3">${m.total_consultas||0} consultas</div></div>
+      <div class="fw7" style="color:var(--teal-600)">${fmtR(m.receita_total)}</div>
+    </div>`).join('');
+  // Repasses
+  const reps = await api(`receptivo_repasses_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=50&select=*,profissional:profissional_id(nome)`);
+  document.getElementById('repasseTb').innerHTML = !reps?.length
+    ? '<tr><td colspan="6">' + emptyState('Sem repasses','—') + '</td></tr>'
+    : (reps||[]).map(r => `<tr>
+      <td class="fw7">${r.profissional?.nome||'—'}</td>
+      <td class="txs tc3">${r.total_consultas||0}</td>
+      <td class="txs">${fmtR(r.valor_bruto)}</td>
+      <td class="txs tc3">${r.percentual_repasse != null ? r.percentual_repasse + '%' : '—'}</td>
+      <td class="fw7" style="color:var(--teal-600)">${fmtR(r.valor_repasse)}</td>
+      <td>${sb(r.status||'pendente')}</td>
+    </tr>`).join('');
+  // Pagamentos
+  const pags = await api(`receptivo_pagamentos_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=20&select=*`);
+  document.getElementById('pagTb').innerHTML = !pags?.length
+    ? '<tr><td colspan="5">' + emptyState('Sem pagamentos','—') + '</td></tr>'
+    : (pags||[]).map(p => `<tr>
+      <td class="txs tc3">${p.asaas_payment_id||'—'}</td>
+      <td class="txs tc3">${p.tipo_evento||'—'}</td>
+      <td class="fw7">${fmtR(p.valor)}</td>
+      <td>${sb(p.status||'pendente')}</td>
+      <td class="txs tc3">${fmtDt(p.created_at)}</td>
+    </tr>`).join('');
+}
+
+/* ── CAMPANHAS ── */
+async function loadCampanhas() {
+  // Lock por plano
+  const isPro = ['pro','business'].includes((U.plano||'').toLowerCase());
+  document.getElementById('campanhaLock').style.display = isPro ? 'none' : 'flex';
+  const data = await api(`receptivo_campanhas_v1?cliente_id=eq.${U.id}&order=created_at.desc&limit=20`);
+  document.getElementById('campTb').innerHTML = !data?.length
+    ? '<tr><td colspan="5">' + emptyState('Nenhuma campanha','Crie a primeira campanha acima.') + '</td></tr>'
+    : (data||[]).map(c => `<tr>
+      <td class="fw7">${c.nome}</td>
+      <td class="txs tc3">${c.total_enviados||0}</td>
+      <td class="txs tc3">${c.total_abertos||0} (${c.total_enviados ? Math.round((c.total_abertos||0)/c.total_enviados*100) : 0}%)</td>
+      <td>${sb(c.status)}</td>
+      <td class="txs tc3">${fmtDt(c.enviada_em||c.created_at)}</td>
+    </tr>`).join('');
+}
+
+async function salvarCampanha(status) {
+  const nome    = document.getElementById('campNome').value.trim();
+  const assunto = document.getElementById('campAssunto').value.trim();
+  const html    = document.getElementById('campHTML').value.trim();
+  if (!nome || !assunto || !html) { alert('Preencha todos os campos.'); return; }
+  const body = { cliente_id: U.id, nome, assunto, conteudo_html: html, status };
+  const r = await api('receptivo_campanhas_v1', { method:'POST', body: JSON.stringify(body) });
+  if (r) { alert(status === 'enviando' ? 'Campanha disparada!' : 'Rascunho salvo!'); loadCampanhas(); } else alert('Erro.');
+}
+
+/* ── RELATORIOS ── */
+async function loadRelatorios() {
+  const dias = parseInt(document.getElementById('relPeriodo').value) || 30;
+  const desde = new Date(Date.now() - dias * 86400000).toISOString();
+  // Stats
+  const leads = await api(`receptivo_leads_v1?cliente_id=eq.${U.id}&created_at=gte.${desde}&select=status,lgpd_aceito`);
+  const agend = await api(`receptivo_agendamentos_v1?cliente_id=eq.${U.id}&created_at=gte.${desde}&select=status,lembrete_24h_enviado,confirmacao_recebida`);
+  const total    = leads?.length || 0;
+  const agendQtd = agend?.length || 0;
+  const realiz   = (agend||[]).filter(x=>x.status==='realizado').length;
+  const txConf   = agendQtd ? Math.round(((agend||[]).filter(x=>x.confirmacao_recebida).length/agendQtd*100)) : 0;
+  document.getElementById('relStats').innerHTML = `
+    <div class="stat c-teal"><div class="stat-lb">Leads captados</div><div class="stat-val">${total}</div></div>
+    <div class="stat c-blue"><div class="stat-lb">Agendamentos</div><div class="stat-val">${agendQtd}</div></div>
+    <div class="stat c-green"><div class="stat-lb">Realizadas</div><div class="stat-val">${realiz}</div></div>
+    <div class="stat c-yellow"><div class="stat-lb">Taxa confirmacao</div><div class="stat-val">${txConf}%</div></div>`;
+  // Bot performance
+  const sessions = await api(`receptivo_sessoes_bot_v1?cliente_id=eq.${U.id}&created_at=gte.${desde}&select=stage_atual,duracao_segundos`);
+  const bEl = document.getElementById('relBotBody');
+  if (sessions?.length) {
+    const concluidas = (sessions).filter(x=>['CONF','FIM'].includes(x.stage_atual)).length;
+    const avgDur = sessions.filter(x=>x.duracao_segundos).reduce((s,x)=>s+x.duracao_segundos,0) / (sessions.filter(x=>x.duracao_segundos).length||1);
+    bEl.innerHTML = `
+      <div class="area-row"><div class="area-name tsm">Total de sessoes</div><span class="fw7">${sessions.length}</span></div>
+      <div class="area-row"><div class="area-name tsm">Sessoes concluidas</div><span class="fw7">${concluidas}</span></div>
+      <div class="area-row"><div class="area-name tsm">Tempo medio de triagem</div><span class="fw7" style="color:var(--green)">${Math.round(avgDur/60)} min</span></div>
+      <div class="area-row" style="border:none"><div class="area-name tsm">Taxa de conclusao</div><span class="fw7" style="color:var(--teal-600)">${sessions.length ? Math.round(concluidas/sessions.length*100) : 0}%</span></div>`;
+  } else { bEl.innerHTML = emptyState('Sem dados do bot','Nenhuma sessao registrada no periodo.'); }
+  // Especialidades
+  const eEsp = document.getElementById('relEspBody');
+  const leadsEsp = await api(`receptivo_leads_v1?cliente_id=eq.${U.id}&created_at=gte.${desde}&select=especialidade:especialidade_id(nome)`);
+  if (leadsEsp?.length) {
+    const counts = {};
+    leadsEsp.forEach(l => { const n = l.especialidade?.nome||'Sem especialidade'; counts[n] = (counts[n]||0) + 1; });
+    const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    const total2 = sorted.reduce((s,x)=>s+x[1],0);
+    eEsp.innerHTML = sorted.map(([n,c]) => `<div class="area-row"><div class="area-name tsm">${n}</div><div style="flex:1;margin:0 10px;"><div class="prog-bar"><div class="prog-fill" style="width:${Math.round(c/total2*100)}%"></div></div></div><span class="badge b-teal">${Math.round(c/total2*100)}%</span></div>`).join('');
+  } else { eEsp.innerHTML = emptyState('Sem dados','Nenhum lead no periodo.'); }
+  // Log automacoes
+  const logs = await api(`receptivo_log_automacoes_v1?cliente_id=eq.${U.id}&created_at=gte.${desde}&order=created_at.desc&limit=50&select=*`);
+  document.getElementById('logTb').innerHTML = !logs?.length
+    ? '<tr><td colspan="5">' + emptyState('Sem logs','Nenhuma automacao registrada.') + '</td></tr>'
+    : (logs||[]).map(l => `<tr>
+      <td class="txs tc3">${l.tipo_automacao||'—'}</td>
+      <td>${sb(l.status)}</td>
+      <td class="txs tc3">${l.nome_paciente||l.lead_id||'—'}</td>
+      <td class="txs tc3">${l.descricao||'—'}</td>
+      <td class="txs tc3">${fmtDt(l.created_at)}</td>
+    </tr>`).join('');
+  document.getElementById('logFt').textContent = `${logs?.length||0} logs exibidos`;
+}
+
+/* ── CONFIG BOT ── */
+async function loadConfigBot() {
+  const bot = await api(`receptivo_config_bot_v1?cliente_id=eq.${U.id}&limit=1`);
+  const b = bot?.[0];
+  if (b) {
+    document.getElementById('botNome').value      = b.nome_bot || '';
+    document.getElementById('botSaudacao').value  = b.saudacao_inicial || '';
+    document.getElementById('botHrInicio').value  = b.horario_inicio ?? 8;
+    document.getElementById('botHrFim').value     = b.horario_fim ?? 18;
+    document.getElementById('botDias').value      = b.dias_ativos || 'seg-sex';
+    document.getElementById('botMsgFora').value   = b.msg_fora_horario || '';
+    document.getElementById('botMsgLgpd').value   = b.msg_lgpd || '';
+    document.getElementById('botMsgViavel').value = b.msg_viavel || '';
+    document.getElementById('botMsgInviavel').value = b.msg_inviavel || '';
+    document.getElementById('botMsgAgendado').value = b.msg_agendado || '';
+    document.getElementById('togBotAtivo').checked = !!b.bot_ativo;
+    document.getElementById('togMostrarDocs').checked = !!b.mostrar_docs;
+  }
+  await loadEspecialidades();
+  await loadPerguntas();
+  await loadDocs();
+}
+
+async function saveBotConfig() {
+  const bot = await api(`receptivo_config_bot_v1?cliente_id=eq.${U.id}&limit=1`);
+  const body = {
+    nome_bot: document.getElementById('botNome').value,
+    saudacao_inicial: document.getElementById('botSaudacao').value,
+    horario_inicio: parseInt(document.getElementById('botHrInicio').value)||8,
+    horario_fim: parseInt(document.getElementById('botHrFim').value)||18,
+    dias_ativos: document.getElementById('botDias').value,
+    msg_fora_horario: document.getElementById('botMsgFora').value,
+    msg_lgpd: document.getElementById('botMsgLgpd').value,
+    msg_viavel: document.getElementById('botMsgViavel').value,
+    msg_inviavel: document.getElementById('botMsgInviavel').value,
+    msg_agendado: document.getElementById('botMsgAgendado').value,
+    bot_ativo: document.getElementById('togBotAtivo').checked,
+    mostrar_docs: document.getElementById('togMostrarDocs').checked,
+    updated_at: new Date().toISOString()
+  };
+  let r;
+  if (bot?.[0]) {
+    r = await api(`receptivo_config_bot_v1?id=eq.${bot[0].id}`, { method:'PATCH', body: JSON.stringify(body) });
+  } else {
+    body.cliente_id = U.id;
+    r = await api('receptivo_config_bot_v1', { method:'POST', body: JSON.stringify(body) });
+  }
+  alert(r !== null ? 'Configuracoes salvas!' : 'Erro ao salvar.');
+}
+
+async function loadEspecialidades() {
+  const el = document.getElementById('espList');
+  const data = await api(`receptivo_especialidades_v1?cliente_id=eq.${U.id}&order=nome.asc&select=*`);
+  // Preenche o select de perguntas
+  const sel = document.getElementById('filtroEspPerguntas');
+  sel.innerHTML = '<option value="">Selecione a especialidade</option>' + (data||[]).map(e=>`<option value="${e.id}">${e.nome}</option>`).join('');
+  el.innerHTML = !data?.length
+    ? emptyState('Nenhuma especialidade','Adicione especialidades que seu bot oferece.')
+    : `<div class="tbl-wrap"><table><thead><tr><th>Nome</th><th>Descricao</th><th>Ativo</th><th></th></tr></thead><tbody>` +
+      (data||[]).map(e => `<tr>
+        <td class="fw7">${e.nome}</td>
+        <td class="txs tc3">${e.descricao||'—'}</td>
+        <td>${e.ativo !== false ? '<span class="badge b-green">Sim</span>' : '<span class="badge b-gray">Nao</span>'}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="delEsp('${e.id}')">Remover</button></td>
+      </tr>`).join('') + '</tbody></table></div>';
+}
+
+async function addEspecialidade() {
+  const nome = prompt('Nome da especialidade (ex: Psicologia, Cardiologia, Odontologia):');
+  if (!nome) return;
+  const desc = prompt('Descricao breve (pode deixar em branco):') || '';
+  const r = await api('receptivo_especialidades_v1', { method:'POST', body: JSON.stringify({ cliente_id: U.id, nome, descricao: desc, ativo: true }) });
+  if (r) { alert('Especialidade adicionada!'); loadEspecialidades(); } else alert('Erro ao salvar.');
+}
+
+async function delEsp(id) {
+  if (!confirm('Remover esta especialidade? As perguntas vinculadas tambem serao removidas.')) return;
+  await api(`receptivo_especialidades_v1?id=eq.${id}`, { method:'DELETE' });
+  loadEspecialidades();
+}
+
+async function loadPerguntas() {
+  const espId = document.getElementById('filtroEspPerguntas').value;
+  const el = document.getElementById('perguntasList');
+  if (!espId) { el.innerHTML = emptyState('Selecione uma especialidade','Escolha a especialidade no filtro acima para ver e editar as perguntas.'); return; }
+  const data = await api(`receptivo_perguntas_v1?cliente_id=eq.${U.id}&especialidade_id=eq.${espId}&order=ordem.asc&select=*`);
+  el.innerHTML = !data?.length
+    ? emptyState('Nenhuma pergunta','Adicione perguntas de triagem para esta especialidade.')
+    : `<div class="tbl-wrap"><table><thead><tr><th>Ordem</th><th>Pergunta</th><th>Obrigatoria</th><th></th></tr></thead><tbody>` +
+      (data||[]).map(p => `<tr>
+        <td class="txs tc3">${p.ordem||'—'}</td>
+        <td>${p.pergunta}</td>
+        <td>${p.obrigatoria ? '<span class="badge b-teal">Sim</span>' : '<span class="badge b-gray">Nao</span>'}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="delPergunta('${p.id}')">Remover</button></td>
+      </tr>`).join('') + '</tbody></table></div>';
+}
+
+async function addPergunta() {
+  const espId = document.getElementById('filtroEspPerguntas').value;
+  if (!espId) { alert('Selecione uma especialidade primeiro.'); return; }
+  const perg = prompt('Texto da pergunta:');
+  if (!perg) return;
+  const ordem = parseInt(prompt('Ordem (numero):') || '1');
+  const r = await api('receptivo_perguntas_v1', { method:'POST', body: JSON.stringify({ cliente_id: U.id, especialidade_id: espId, pergunta: perg, ordem, obrigatoria: true }) });
+  if (r) { alert('Pergunta adicionada!'); loadPerguntas(); } else alert('Erro.');
+}
+
+async function delPergunta(id) {
+  if (!confirm('Remover esta pergunta?')) return;
+  await api(`receptivo_perguntas_v1?id=eq.${id}`, { method:'DELETE' });
+  loadPerguntas();
+}
+
+async function loadDocs() {
+  const el = document.getElementById('docsList');
+  const data = await api(`receptivo_docs_especialidade_v1?cliente_id=eq.${U.id}&select=*,especialidade:especialidade_id(nome)`);
+  el.innerHTML = !data?.length
+    ? emptyState('Nenhum documento','Adicione orientacoes que serao enviadas ao paciente apos o agendamento.')
+    : `<div class="tbl-wrap"><table><thead><tr><th>Especialidade</th><th>Tipo</th><th>Conteudo / URL</th><th></th></tr></thead><tbody>` +
+      (data||[]).map(d => `<tr>
+        <td class="txs fw7">${d.especialidade?.nome||'—'}</td>
+        <td class="txs tc3">${d.tipo||'texto'}</td>
+        <td class="txs tc3">${(d.conteudo||d.url||'').substring(0,60)}${(d.conteudo||d.url||'').length>60?'...':''}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="delDoc('${d.id}')">Remover</button></td>
+      </tr>`).join('') + '</tbody></table></div>';
+}
+
+async function addDoc() {
+  const esps = await api(`receptivo_especialidades_v1?cliente_id=eq.${U.id}&select=id,nome`);
+  if (!esps?.length) { alert('Cadastre especialidades primeiro.'); return; }
+  const names = esps.map((e,i) => `${i+1}. ${e.nome}`).join('\n');
+  const idx = parseInt(prompt(`Escolha a especialidade:\n${names}\nDigite o numero:`)) - 1;
+  if (isNaN(idx) || !esps[idx]) { alert('Selecao invalida.'); return; }
+  const conteudo = prompt('Conteudo / orientacoes (texto ou URL):');
+  if (!conteudo) return;
+  const r = await api('receptivo_docs_especialidade_v1', { method:'POST', body: JSON.stringify({ cliente_id: U.id, especialidade_id: esps[idx].id, conteudo, tipo: conteudo.startsWith('http') ? 'url' : 'texto' }) });
+  if (r) { alert('Documento adicionado!'); loadDocs(); } else alert('Erro.');
+}
+
+async function delDoc(id) {
+  if (!confirm('Remover este documento?')) return;
+  await api(`receptivo_docs_especialidade_v1?id=eq.${id}`, { method:'DELETE' });
+  loadDocs();
+}
+
+/* ── CONFIGURACOES ── */
+async function loadConfig() {
+  const data = await api(`receptivo_clientes_v1?id=eq.${U.id}&select=*&limit=1`);
+  const c = data?.[0] || U;
+  document.getElementById('cfgNome').value      = c.nome_clinica || '';
+  document.getElementById('cfgResp').value      = c.nome_responsavel || '';
+  document.getElementById('cfgDoc').value       = c.cpf_cnpj || '';
+  document.getElementById('cfgTel').value       = c.telefone || '';
+  document.getElementById('cfgEnd').value       = c.endereco || '';
+  document.getElementById('cfgCidade').value    = c.cidade || '';
+  document.getElementById('cfgEstado').value    = c.estado || '';
+  document.getElementById('cfgCep').value       = c.cep || '';
+  document.getElementById('cfgSite').value      = c.site || '';
+  document.getElementById('cfgRepasse').value   = c.percentual_repasse || '';
+  document.getElementById('cfgEvoUrl').value    = c.evolution_url || '';
+  document.getElementById('cfgEvoKey').value    = c.evolution_key || '';
+  document.getElementById('cfgInstancia').value = c.instancia_whatsapp || '';
+  checkWA(c.evolution_url, c.evolution_key, c.instancia_whatsapp);
+  loadHorarios();
+}
+
+async function saveClinica() {
+  const body = {
+    nome_clinica: document.getElementById('cfgNome').value,
+    nome_responsavel: document.getElementById('cfgResp').value,
+    cpf_cnpj: document.getElementById('cfgDoc').value,
+    telefone: document.getElementById('cfgTel').value,
+    endereco: document.getElementById('cfgEnd').value,
+    cidade: document.getElementById('cfgCidade').value,
+    estado: document.getElementById('cfgEstado').value,
+    cep: document.getElementById('cfgCep').value,
+    site: document.getElementById('cfgSite').value,
+    percentual_repasse: parseFloat(document.getElementById('cfgRepasse').value)||null,
+    ultima_atualizacao: new Date().toISOString()
+  };
+  const r = await api(`receptivo_clientes_v1?id=eq.${U.id}`, { method:'PATCH', body: JSON.stringify(body) });
+  alert(r !== null ? 'Dados salvos com sucesso!' : 'Erro ao salvar.');
+}
+
+async function saveSenha() {
+  const s1 = document.getElementById('cfgSenha1').value;
+  const s2 = document.getElementById('cfgSenha2').value;
+  if (!s1) { alert('Informe a nova senha.'); return; }
+  if (s1 !== s2) { alert('Senhas nao conferem.'); return; }
+  if (s1.length < 6) { alert('Senha deve ter ao menos 6 caracteres.'); return; }
+  const r = await api(`receptivo_clientes_v1?id=eq.${U.id}`, { method:'PATCH', body: JSON.stringify({ senha: s1 }) });
+  if (r !== null) { alert('Senha alterada!'); document.getElementById('cfgSenha1').value = ''; document.getElementById('cfgSenha2').value = ''; }
+  else alert('Erro ao alterar senha.');
+}
+
+async function saveEvolution() {
+  const body = { evolution_url: document.getElementById('cfgEvoUrl').value, evolution_key: document.getElementById('cfgEvoKey').value, instancia_whatsapp: document.getElementById('cfgInstancia').value };
+  const r = await api(`receptivo_clientes_v1?id=eq.${U.id}`, { method:'PATCH', body: JSON.stringify(body) });
+  if (r !== null) { alert('Configuracoes WhatsApp salvas!'); U.evolution_url = body.evolution_url; U.evolution_key = body.evolution_key; U.instancia_whatsapp = body.instancia_whatsapp; }
+  else alert('Erro ao salvar.');
+}
+
+async function testarWA() {
+  const url = document.getElementById('cfgEvoUrl').value;
+  const key = document.getElementById('cfgEvoKey').value;
+  const inst = document.getElementById('cfgInstancia').value;
+  await checkWA(url, key, inst, true);
+}
+
+async function checkWA(url, key, inst, verbose=false) {
+  const badge = document.getElementById('waStatusBadge');
+  const pill  = document.getElementById('waPill');
+  const statusEl = document.getElementById('waStatus');
+  if (!url || !key || !inst) {
+    badge.className = 'badge b-yellow'; badge.textContent = 'Nao configurado';
+    pill.className = 'wa-pill'; statusEl.textContent = 'WhatsApp nao configurado';
+    return;
+  }
+  try {
+    const r = await fetch(`${url}/instance/connectionState/${inst}`, { headers: { apikey: key } });
+    const d = await r.json();
+    const connected = d?.state === 'open' || d?.instance?.state === 'open';
+    badge.className = connected ? 'badge b-green' : 'badge b-red';
+    badge.textContent = connected ? 'Conectado' : 'Desconectado';
+    pill.className = connected ? 'wa-pill on' : 'wa-pill';
+    statusEl.textContent = connected ? 'WhatsApp conectado' : 'WhatsApp offline';
+    if (verbose) alert(connected ? 'WhatsApp conectado com sucesso!' : 'WhatsApp desconectado. Verifique a instancia.');
+  } catch(e) {
+    badge.className = 'badge b-red'; badge.textContent = 'Erro de conexao';
+    pill.className = 'wa-pill'; statusEl.textContent = 'WhatsApp offline';
+    if (verbose) alert('Nao foi possivel conectar. Verifique a URL e a chave.');
+  }
+}
+
+async function loadHorarios() {
+  const el = document.getElementById('horariosBody');
+  const data = await api(`receptivo_horarios_v1?cliente_id=eq.${U.id}&select=*,profissional:profissional_id(nome)`);
+  el.innerHTML = !data?.length
+    ? emptyState('Nenhum horario cadastrado','Adicione horarios disponiveis para cada profissional.')
+    : `<div class="tbl-wrap"><table><thead><tr><th>Profissional</th><th>Dia da Semana</th><th>Hora Inicio</th><th>Hora Fim</th><th>Status</th></tr></thead><tbody>` +
+      (data||[]).map(h => `<tr>
+        <td class="fw7">${h.profissional?.nome||'Todos'}</td>
+        <td class="txs tc3">${h.dia_semana||'—'}</td>
+        <td class="txs tc3">${h.hora_inicio||'—'}</td>
+        <td class="txs tc3">${h.hora_fim||'—'}</td>
+        <td>${h.ativo !== false ? '<span class="badge b-green">Ativo</span>' : '<span class="badge b-gray">Inativo</span>'}</td>
+      </tr>`).join('') + '</tbody></table></div>';
+}
+
+/* ── HELPERS ── */
+function thirtyDaysAgo() { return new Date(Date.now() - 30*86400000).toISOString(); }
+
+/* ── THEME ── */
+function toggleTheme() {
+  const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('ma_theme', t);
+  applyIco(t);
+}
+function applyIco(t) {
+  const i = document.getElementById('themeIco');
+  if (!i) return;
+  i.innerHTML = t === 'dark' ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>' : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+
+/* ── INIT ── */
+window.onload = async function() {
+  // Tema
+  const t = localStorage.getItem('ma_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  applyIco(t);
+  // Sessao
+  const session = sessionStorage.getItem('ma_u');
+  if (!session) { window.location.href = 'medatend_login.html'; return; }
+  U = JSON.parse(session);
+  // Sidebar
+  const av = iniStr(U.nome_clinica);
+  document.getElementById('sbAv').textContent   = av;
+  document.getElementById('sbNome').textContent = U.nome_clinica || 'Clinica';
+  const plano = (U.plano||'starter').toLowerCase();
+  const plEl  = document.getElementById('sbPlano');
+  plEl.textContent = plano.charAt(0).toUpperCase() + plano.slice(1);
+  plEl.className   = 'plan-chip plan-' + plano;
+  // Verifica WhatsApp
+  checkWA(U.evolution_url, U.evolution_key, U.instancia_whatsapp);
+  // Carrega dashboard
+  loadDash();
+};
+</script>
+</body>
+</html>
